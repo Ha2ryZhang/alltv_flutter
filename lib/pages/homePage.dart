@@ -1,54 +1,60 @@
+import 'package:alltv/pages/recommendation.dart';
 import 'package:flutter/material.dart';
-import 'package:alltv/pages/first.dart';
 import 'package:alltv/pages/second.dart';
 import 'package:alltv/pages/third.dart';
+
 class AllTVHome extends StatefulWidget {
   @override
   AllTVHomeState createState() => AllTVHomeState();
 }
 
-class AllTVHomeState extends State<AllTVHome> with SingleTickerProviderStateMixin {
-  TabController controller;
+class AllTVHomeState extends State<AllTVHome>
+    with SingleTickerProviderStateMixin {
+  int _currentIndex = 0;
 
+  List<Widget> _pageList = [
+    Recommendation(),
+    SecondTab(),
+    ThirdTab(),
+  ];
+
+  List<BottomNavigationBarItem> _barItem = [
+    BottomNavigationBarItem(
+        icon: Icon(
+          Icons.home,
+        ),
+        title: Container()),
+    BottomNavigationBarItem(icon: Icon(Icons.favorite), title: Container()),
+    BottomNavigationBarItem(icon: Icon(Icons.person), title: Container()),
+  ];
   @override
   void initState() {
     super.initState();
-
-    controller = TabController(length: 3, vsync: this);
   }
 
   @override
   void dispose() {
-    // Dispose of the Tab Controller
-    controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      body: TabBarView(
-        children: <Widget>[FirstTab(), SecondTab(), ThirdTab()],
-        controller: controller,
-      ),
-      bottomNavigationBar: Material(
-        color: Colors.blue,
-        child: TabBar(
-          tabs: <Tab>[
-            Tab(
-              icon: Icon(Icons.home),
-            ),
-            Tab(
-              icon: Icon(Icons.favorite),
-            ),
-            Tab(
-              icon: Icon(Icons.person),
-            ),
-          ],
-          controller: controller,
-        ),
+      body: this._pageList[this._currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: (int index) {
+          setState(() {
+            this._currentIndex = index;
+          });
+        },
+        currentIndex: this._currentIndex,
+        items: _barItem,
+        type: BottomNavigationBarType.fixed,
       ),
     );
   }
+
+  // Widget buildBottomBar(){
+  //   return BottomNavigationBar(items: null)
+  // }
 }
