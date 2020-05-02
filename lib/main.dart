@@ -9,8 +9,8 @@ import 'package:provider/provider.dart';
 void main() => Global.init().then((e) => runApp(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider<Category>.value(
-            value: Global.category,
+          ChangeNotifierProvider<CategoryList>.value(
+            value: Global.categories,
           ),
         ],
         child: new MyApp()

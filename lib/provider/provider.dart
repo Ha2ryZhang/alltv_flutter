@@ -1,3 +1,3 @@
 library app_provider;
 
-export 'category.dart';
+export 'categoryList.dart';

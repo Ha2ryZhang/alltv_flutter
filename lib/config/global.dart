@@ -1,22 +1,22 @@
 import 'dart:io';
 
+import 'package:alltv/model/category.dart';
 import 'package:alltv/provider/provider.dart';
 import 'package:alltv/route/Application.dart';
 import 'package:alltv/route/routes.dart';
 import 'package:alltv/utils/storage.dart';
+import 'package:alltv/values/storages.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 /// 全局配置
 class Global {
- 
   /// 是否第一次打开
   static bool isFirstOpen = false;
 
   /// 自定义分类列表,
-  static Category category = Category();
-
+  static CategoryList categories = new CategoryList();
 
   /// init
   static Future init() async {
@@ -30,12 +30,39 @@ class Global {
     Router router = Router();
     Routes.configureRoutes(router);
     Application.router = router;
-  
+
     // 读取设备第一次打开
-    isFirstOpen = !StorageUtil().getBool("device_already_open");
+    isFirstOpen = !StorageUtil().getBool(STORAGE_DEVICE_ALREADY_OPEN_KEY);
     if (isFirstOpen) {
-      StorageUtil().setBool("device_already_open", true);
+      StorageUtil().setBool(STORAGE_DEVICE_ALREADY_OPEN_KEY, true);
     }
+    //读取分类信息 没有的话给个默认值
+    
+    // TODO 动态类型转换
+    List _categoriesJSON = StorageUtil().getJSON(RECOMMENDATION_CATEGORY_LIST);
+
+    if (_categoriesJSON != null) {
+      List<Category> clist=[];
+      _categoriesJSON.forEach((f) {
+        clist.add(Category.fromJson(f));
+      });
+      categories.setCategories(clist);
+    } else {
+      //设置默认分类 倒时候换成api 读取
+      Category c1 = new Category(cid: 1, name: "推荐");
+      Category c2 = new Category(cid: 1, name: "王者荣耀");
+      Category c3 = new Category(cid: 1, name: "英雄联盟");
+      Category c4 = new Category(cid: 1, name: "绝地求生");
+      List<Category> list = [];
+      list.add(c1);
+      list.add(c2);
+      list.add(c3);
+      list.add(c4);
+      categories.setCategories(list);
+      //保存localstorage
+      StorageUtil().setJSON(RECOMMENDATION_CATEGORY_LIST, list);
+    }
+
     // android 状态栏为透明的沉浸
     if (Platform.isAndroid) {
       SystemUiOverlayStyle systemUiOverlayStyle =

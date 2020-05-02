@@ -1,4 +1,7 @@
+import 'package:alltv/model/category.dart';
+import 'package:alltv/provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SecondTab extends StatelessWidget {
   @override
@@ -19,6 +22,15 @@ class SecondTab extends StatelessWidget {
               Text(
                 "Second Tab",
                 style: TextStyle(color: Colors.white),
+              ),
+              FloatingActionButton(
+                onPressed: (){
+                  List categories = Provider.of<CategoryList>(context,listen: false).categories;
+                  Category category=new Category(cid: 5, name: "555");
+                  categories.add(category);
+                  Provider.of<CategoryList>(context).setCategories(categories);
+                },
+                child: Text("data"),
               )
             ],
           ),

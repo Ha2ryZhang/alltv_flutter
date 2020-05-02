@@ -16,8 +16,10 @@ dependencies:
   provider: ^4.0.5+1
   # 屏幕适配
   flutter_screenutil: ^1.0.2
-  #路由管理
+  # 路由管理
   fluro: "^1.6.3"
+  # toast
+  fluttertoast: ^4.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
