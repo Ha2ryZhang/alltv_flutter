@@ -1,7 +1,6 @@
 import 'package:alltv/model/category.dart';
 import 'package:alltv/provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 /// 推荐页
@@ -13,15 +12,11 @@ class Recommendation extends StatefulWidget {
 class RecommendationState extends State<Recommendation>
     with SingleTickerProviderStateMixin {
   TabController _tabController;
-  // 用一个key来保存下拉刷新控件RefreshIndicator
-  GlobalKey<RefreshIndicatorState> _refreshKey =
-      GlobalKey<RefreshIndicatorState>();
   //推荐分类列表
   List<Category> _categoryList = [];
   @override
   void initState() {
     super.initState();
-
     _categoryList =
         Provider.of<CategoryList>(context, listen: false).categories;
     _tabController = TabController(length: _categoryList.length, vsync: this);
@@ -44,23 +39,27 @@ class RecommendationState extends State<Recommendation>
   /// appbar
   Widget buildAppBar() {
     return AppBar(
-      title: Text("首页推荐"),
-      centerTitle: true,
-      leading: new IconButton(
-          icon: new Icon(Icons.live_tv),
-          onPressed: () {
-            Fluttertoast.showToast(
-                msg: "This is Center Short Toast",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER);
-          }),
+      title: buildTabBar(),
+      titleSpacing: 0.0,
+      // 暂时去掉
+      // leading: new IconButton(
+      //     icon: new Icon(Icons.live_tv),
+      //     onPressed: () {
+      //       Fluttertoast.showToast(
+      //           msg: "This is Center Short Toast",
+      //           toastLength: Toast.LENGTH_SHORT,
+      //           gravity: ToastGravity.CENTER);
+      //     }),
       actions: <Widget>[
         new IconButton(
-          icon: new Icon(Icons.search),
+          icon: new Icon(Icons.arrow_drop_down),
+          iconSize: 38.0,
+          alignment: Alignment.bottomCenter,
+          tooltip: "自定义",
           onPressed: () {},
         ),
       ],
-      bottom: buildTabBar(),
+      // bottom: buildTabBar(),
     );
   }
 
@@ -84,38 +83,53 @@ class RecommendationState extends State<Recommendation>
     });
   }
 
+  List<Widget> buildTabViewItem() {
+    List<Widget> widgets = [];
+    _categoryList.forEach((category) {
+      var refreshIndicator = RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: ListView(
+            children: <Widget>[buildCardItem()],
+          ));
+      widgets.add(refreshIndicator);
+    });
+    return widgets;
+  }
+
   /// tab view
   Widget buildTabView() {
     return TabBarView(
       controller: _tabController,
-      children: <Widget>[
-        RefreshIndicator(
-            key: _refreshKey,
-            onRefresh: _onRefresh,
-            child: ListView(
-              padding: const EdgeInsets.all(8.0),
+      children: buildTabViewItem(),
+    );
+  }
+
+  Widget buildCardItem() {
+    return Card(
+        child: InkWell(
+            splashColor: Colors.blue.withAlpha(30),
+            onTap: () {
+              print('Card tapped.');
+            },
+            child: Column(
               children: <Widget>[
-                Container(
-                  height: 50,
-                  color: Colors.amber[600],
-                  child: const Center(child: Text('Entry A')),
+                Image.network(
+                  'https://rpic.douyucdn.cn/asrpic/200504/276685_1847.png/dy1',
+                  fit: BoxFit.fitWidth,
+                  width: 400,
                 ),
-                Container(
-                  height: 50,
-                  color: Colors.amber[500],
-                  child: const Center(child: Text('Entry B')),
-                ),
-                Container(
-                  height: 50,
-                  color: Colors.amber[100],
-                  child: const Center(child: Text('Entry C')),
+                ListTile(
+                  leading: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                          'https://apic.douyucdn.cn/upload/avatar_v3/202004/154c0d537ee14b8db3c6bcfceec117f2_big.jpg',
+                          fit: BoxFit.fill,
+                          width: 50,
+                          height: 50)),
+                  title: Text('斗鱼·黄金大奖赛'),
+                  subtitle: Text('【黄金大奖赛S9】5.4E组17点'),
                 ),
               ],
-            )),
-        Text('22222'),
-        Text('33333'),
-        Text('44444'),
-      ],
-    );
+            )));
   }
 }

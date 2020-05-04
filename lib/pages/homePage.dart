@@ -15,6 +15,7 @@ class AllTVHomeState extends State<AllTVHome>
   List<Widget> _pageList = [
     Recommendation(),
     SecondTab(),
+    SecondTab(),
     ThirdTab(),
   ];
 
@@ -25,6 +26,7 @@ class AllTVHomeState extends State<AllTVHome>
         ),
         title: Container()),
     BottomNavigationBarItem(icon: Icon(Icons.favorite), title: Container()),
+     BottomNavigationBarItem(icon: Icon(Icons.search), title: Container()),
     BottomNavigationBarItem(icon: Icon(Icons.person), title: Container()),
   ];
   @override

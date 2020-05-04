@@ -31,18 +31,21 @@ class Global {
     Routes.configureRoutes(router);
     Application.router = router;
 
+    //初始化网络请求
+   
+
     // 读取设备第一次打开
     isFirstOpen = !StorageUtil().getBool(STORAGE_DEVICE_ALREADY_OPEN_KEY);
     if (isFirstOpen) {
       StorageUtil().setBool(STORAGE_DEVICE_ALREADY_OPEN_KEY, true);
     }
     //读取分类信息 没有的话给个默认值
-    
-    // TODO 动态类型转换
+
     List _categoriesJSON = StorageUtil().getJSON(RECOMMENDATION_CATEGORY_LIST);
 
     if (_categoriesJSON != null) {
-      List<Category> clist=[];
+      //临时办法
+      List<Category> clist = [];
       _categoriesJSON.forEach((f) {
         clist.add(Category.fromJson(f));
       });
