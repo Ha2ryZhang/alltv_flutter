@@ -52,15 +52,17 @@ class Global {
       categories.setCategories(clist);
     } else {
       //设置默认分类 倒时候换成api 读取
-      Category c1 = new Category(cid: 1, name: "推荐");
-      Category c2 = new Category(cid: 1, name: "王者荣耀");
-      Category c3 = new Category(cid: 1, name: "英雄联盟");
-      Category c4 = new Category(cid: 1, name: "绝地求生");
+      Category c1 = new Category(cid: '0', name: "推荐");
+      Category c2 = new Category(cid: '181', name: "王者荣耀");
+      Category c3 = new Category(cid: '1', name: "英雄联盟");
+      Category c4 = new Category(cid: '270', name: "绝地求生");
+      Category c5 = new Category(cid: '311', name: "颜值");
       List<Category> list = [];
       list.add(c1);
       list.add(c2);
       list.add(c3);
       list.add(c4);
+      list.add(c5);
       categories.setCategories(list);
       //保存localstorage
       StorageUtil().setJSON(RECOMMENDATION_CATEGORY_LIST, list);

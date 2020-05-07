@@ -26,7 +26,7 @@ class SecondTab extends StatelessWidget {
               FloatingActionButton(
                 onPressed: (){
                   List categories = Provider.of<CategoryList>(context,listen: false).categories;
-                  Category category=new Category(cid: 5, name: "555");
+                  Category category=new Category(cid: "1008", name: "舞蹈");
                   categories.add(category);
                   Provider.of<CategoryList>(context).setCategories(categories);
                 },

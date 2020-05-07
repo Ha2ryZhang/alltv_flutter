@@ -1,5 +1,5 @@
 class Category {
-  int cid;
+  String cid;
   String name;
   Category({
     this.cid,
