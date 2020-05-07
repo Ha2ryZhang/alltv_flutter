@@ -32,7 +32,7 @@ class Global {
     Application.router = router;
 
     //初始化网络请求
-   
+    
 
     // 读取设备第一次打开
     isFirstOpen = !StorageUtil().getBool(STORAGE_DEVICE_ALREADY_OPEN_KEY);

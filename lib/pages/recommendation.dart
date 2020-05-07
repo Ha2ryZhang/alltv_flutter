@@ -1,5 +1,6 @@
 import 'package:alltv/model/category.dart';
 import 'package:alltv/provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +18,7 @@ class RecommendationState extends State<Recommendation>
   @override
   void initState() {
     super.initState();
+  
     _categoryList =
         Provider.of<CategoryList>(context, listen: false).categories;
     _tabController = TabController(length: _categoryList.length, vsync: this);
@@ -89,7 +91,12 @@ class RecommendationState extends State<Recommendation>
       var refreshIndicator = RefreshIndicator(
           onRefresh: _onRefresh,
           child: ListView(
-            children: <Widget>[buildCardItem()],
+            children: <Widget>[
+              buildCardItem(),
+              buildCardItem(),
+              buildCardItem(),
+              buildCardItem()
+            ],
           ));
       widgets.add(refreshIndicator);
     });
@@ -105,6 +112,60 @@ class RecommendationState extends State<Recommendation>
   }
 
   Widget buildCardItem() {
+    var stack = new Stack(
+      alignment: AlignmentDirectional.bottomCenter,
+      children: [
+        CachedNetworkImage(
+          imageUrl:
+              "https://rpic.douyucdn.cn/asrpic/200504/276685_1847.png/dy1",
+          fit: BoxFit.fitWidth,
+          width: MediaQuery.of(context).size.width,
+          placeholder: (context, url) => CircularProgressIndicator(),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+        ),
+        new Container(
+            width: 400,
+            height: 50,
+            padding: const EdgeInsets.all(5),
+            alignment: Alignment.bottomLeft,
+            decoration: new BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black12,
+                  Colors.black54,
+                ],
+              ),
+            ),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                    flex: 1,
+                    child: new Text(
+                      '王者荣耀',
+                      style: new TextStyle(
+                        fontSize: 15,
+                        color: Colors.white,
+                      ),
+                    )),
+                new Icon(
+                  Icons.whatshot,
+                  color: Colors.white70,
+                  size: 20,
+                ),
+                new Text(
+                  '41万',
+                  style: new TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            )),
+      ],
+    );
+
     return Card(
         child: InkWell(
             splashColor: Colors.blue.withAlpha(30),
@@ -113,12 +174,9 @@ class RecommendationState extends State<Recommendation>
             },
             child: Column(
               children: <Widget>[
-                Image.network(
-                  'https://rpic.douyucdn.cn/asrpic/200504/276685_1847.png/dy1',
-                  fit: BoxFit.fitWidth,
-                  width: 400,
-                ),
+                stack,
                 ListTile(
+                  contentPadding: const EdgeInsets.only(left: 5),
                   leading: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Image.network(
