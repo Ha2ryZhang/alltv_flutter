@@ -39,10 +39,10 @@ class _LiveListState extends State<LiveList>
       );
     }
     return RefreshIndicator(
-        onRefresh: _onRefresh,
-        child: ListView.builder(
+      onRefresh: _onRefresh,
+      child: ListView.builder(
           itemCount: _liveRooms.length,
-          itemBuilder: (context, index){
+          itemBuilder: (context, index) {
             return buildCard(_liveRooms[index]);
           }),
     );
@@ -59,6 +59,15 @@ class _LiveListState extends State<LiveList>
   Future<Null> _onRefresh() async {
     loadData(widget.cid);
     return;
+  }
+
+  String convertCom(String com) {
+    switch (com) {
+      case 'douyu':
+        return "斗鱼";
+      default:
+        return "未知";
+    }
   }
 
   Widget buildCard(LiveRoom room) {
@@ -128,7 +137,7 @@ class _LiveListState extends State<LiveList>
                       borderRadius: BorderRadius.circular(8),
                       child: Image.network(room.avatar,
                           fit: BoxFit.fill, width: 50, height: 50)),
-                  title: Text(room.ownerName),
+                  title: Text(convertCom(room.com) + '·' + room.ownerName),
                   subtitle: Text(room.roomName),
                 ),
               ],

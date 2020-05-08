@@ -1,5 +1,6 @@
 class LiveRoom {
   String roomId;
+  String com;
   String cateId;
   String roomThumb;
   String cateName;
@@ -9,10 +10,11 @@ class LiveRoom {
   String ownerName;
   String avatar;
   int online;
-  String realUrl;
+  Null realUrl;
 
   LiveRoom(
       {this.roomId,
+      this.com,
       this.cateId,
       this.roomThumb,
       this.cateName,
@@ -26,6 +28,7 @@ class LiveRoom {
 
   LiveRoom.fromJson(Map<String, dynamic> json) {
     roomId = json['roomId'];
+    com = json['com'];
     cateId = json['cateId'];
     roomThumb = json['roomThumb'];
     cateName = json['cateName'];
@@ -41,6 +44,7 @@ class LiveRoom {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['roomId'] = this.roomId;
+    data['com'] = this.com;
     data['cateId'] = this.cateId;
     data['roomThumb'] = this.roomThumb;
     data['cateName'] = this.cateName;

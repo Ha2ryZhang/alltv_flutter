@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
- 
+
 class HttpManager{
-  final String baseurl = 'http://debugers.com:8888/api';
+  final String baseurl = 'http://192.168.0.105:8888/api';
   final int connectTimeout = 5000;
   final int receiveTimeout = 3000;
  
