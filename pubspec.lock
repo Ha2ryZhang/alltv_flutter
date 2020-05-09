@@ -43,13 +43,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.3"
-  chewie:
-    dependency: "direct main"
-    description:
-      name: chewie
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.9.10"
   clock:
     dependency: transitive
     description:
@@ -92,6 +85,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.9"
+  fijkplayer:
+    dependency: "direct main"
+    description:
+      name: fijkplayer
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.8.2"
   file:
     dependency: transitive
     description:
@@ -191,13 +191,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.0.4"
-  open_iconic_flutter:
-    dependency: transitive
-    description:
-      name: open_iconic_flutter
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.3.0"
   path:
     dependency: transitive
     description:
@@ -392,34 +385,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.8"
-  video_player:
-    dependency: "direct main"
-    description:
-      name: video_player
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.10.10"
-  video_player_platform_interface:
-    dependency: transitive
-    description:
-      name: video_player_platform_interface
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "2.0.2"
-  video_player_web:
-    dependency: transitive
-    description:
-      name: video_player_web
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.1.3"
-  wakelock:
-    dependency: transitive
-    description:
-      name: wakelock
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.1.4+1"
   xml:
     dependency: transitive
     description:
