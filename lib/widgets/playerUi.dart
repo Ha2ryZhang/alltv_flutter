@@ -1,83 +1,26 @@
-import 'package:alltv/widgets/alltv_panel.dart';
-import 'package:fijkplayer/fijkplayer.dart';
-import 'package:flutter/material.dart';
-
-// import 'custom_ui.dart';
-
-class VideoScreen extends StatefulWidget {
-  final String url;
-
-  VideoScreen({@required this.url});
-
-  @override
-  _VideoScreenState createState() => _VideoScreenState();
-}
-
-class _VideoScreenState extends State<VideoScreen> {
-  final FijkPlayer player = FijkPlayer();
-
-  _VideoScreenState();
-
-  @override
-  void initState() {
-    super.initState();
-    player.setOption(FijkOption.hostCategory, "enable-snapshot", 1);
-    player.setOption(FijkOption.playerCategory, "mediacodec-all-videos", 1);
-    startPlay();
-  }
-
-  void startPlay() async {
-    await player.setOption(FijkOption.hostCategory, "request-screen-on", 1);
-    await player.setOption(FijkOption.hostCategory, "request-audio-focus", 1);
-    await player.setDataSource(widget.url, autoPlay: true,showCover: true).catchError((e) {
-      print("setDataSource error: $e");
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Center(
-          child: FijkView(
-            player: player,
-            color: Colors.black,
-            panelBuilder: allTVPanelBuilder(snapShot: true,doubleTap: false),
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    player.release();
-  }
-}
-
 // import 'dart:async';
 
 // import 'package:chewie/src/chewie_player.dart';
 // import 'package:chewie/src/chewie_progress_colors.dart';
+// import 'package:chewie/src/material_progress_bar.dart';
 // import 'package:chewie/src/utils.dart';
 // import 'package:flutter/material.dart';
 // import 'package:video_player/video_player.dart';
 
-// class ChewieCustomWithDanmaku extends StatefulWidget {
-//   final GestureTapCallback onTap;
-//   ChewieCustomWithDanmaku(this.onTap);
+// class MyChewieMaterialControls extends StatefulWidget {
+//   final Function onTap;
+//   const MyChewieMaterialControls(this.onTap);
 
 //   @override
 //   State<StatefulWidget> createState() {
-//     return _ChewieCustomWithDanmakuState();
+//     return _MyChewieMaterialControlsState();
 //   }
 // }
 
-// class _ChewieCustomWithDanmakuState extends State<ChewieCustomWithDanmaku> {
+// class _MyChewieMaterialControlsState extends State<MyChewieMaterialControls> {
 //   VideoPlayerValue _latestValue;
+//   double _latestVolume;
 //   bool _hideStuff = true;
-//   bool _hideDanmaku = false;
 //   Timer _hideTimer;
 //   Timer _initTimer;
 //   Timer _showAfterExpandCollapseTimer;
@@ -86,7 +29,6 @@ class _VideoScreenState extends State<VideoScreen> {
 
 //   final barHeight = 48.0;
 //   final marginSize = 5.0;
-//   DateTime _lastSync;
 
 //   VideoPlayerController controller;
 //   ChewieController chewieController;
@@ -113,29 +55,26 @@ class _VideoScreenState extends State<VideoScreen> {
 //         _cancelAndRestartTimer();
 //       },
 //       child: GestureDetector(
-//           onTap: () => _cancelAndRestartTimer(),
-//           child: Stack(
+//         onTap: () => _cancelAndRestartTimer(),
+//         child: AbsorbPointer(
+//           absorbing: _hideStuff,
+//           child: Column(
 //             children: <Widget>[
-//               AbsorbPointer(
-//                 absorbing: _hideStuff,
-//                 child: Column(
-//                   children: <Widget>[
-//                     _latestValue != null &&
-//                                 !_latestValue.isPlaying &&
-//                                 _latestValue.duration == null ||
-//                             _latestValue.isBuffering
-//                         ? const Expanded(
-//                             child: const Center(
-//                               child: const CircularProgressIndicator(),
-//                             ),
-//                           )
-//                         : _buildHitArea(),
-//                     _buildBottomBar(context),
-//                   ],
-//                 ),
-//               ),
+//               _latestValue != null &&
+//                           !_latestValue.isPlaying &&
+//                           _latestValue.duration == null ||
+//                       _latestValue.isBuffering
+//                   ? const Expanded(
+//                       child: const Center(
+//                         child: const CircularProgressIndicator(),
+//                       ),
+//                     )
+//                   : _buildHitArea(),
+//               _buildBottomBar(context),
 //             ],
-//           )),
+//           ),
+//         ),
+//       ),
 //     );
 //   }
 
@@ -146,7 +85,7 @@ class _VideoScreenState extends State<VideoScreen> {
 //   }
 
 //   void _dispose() {
-//     // controller.removeListener(_updateState);
+//     controller.removeListener(_updateState);
 //     _hideTimer?.cancel();
 //     _initTimer?.cancel();
 //     _showAfterExpandCollapseTimer?.cancel();
@@ -184,15 +123,14 @@ class _VideoScreenState extends State<VideoScreen> {
 //         child: Row(
 //           children: <Widget>[
 //             _buildRefreshButton(controller),
+//             chewieController.isLive ? const SizedBox() : _buildProgressBar(),
 //             chewieController.isLive
 //                 ? Expanded(
 //                     child: const Text(
-//                       '直播',
-//                       style: TextStyle(color: Colors.white),
-//                     ),
-//                   )
+//                     '直播',
+//                     style: TextStyle(color: Colors.white),
+//                   ))
 //                 : _buildPosition(iconColor),
-//             _buildHideDanmakuButton(),
 //             chewieController.allowFullScreen
 //                 ? _buildExpandButton()
 //                 : Container(),
@@ -224,22 +162,6 @@ class _VideoScreenState extends State<VideoScreen> {
 //             ),
 //           ),
 //         ),
-//       ),
-//     );
-//   }
-
-//   Widget _buildHideDanmakuButton() {
-//     return Container(
-//       child: GestureDetector(
-//         child: Icon(
-//           _hideDanmaku ? Icons.favorite : Icons.face,
-//           color: Colors.white,
-//         ),
-//         onTap: () {
-//           setState(() {
-//             _hideDanmaku = !_hideDanmaku;
-//           });
-//         },
 //       ),
 //     );
 //   }
@@ -297,6 +219,7 @@ class _VideoScreenState extends State<VideoScreen> {
 //       ),
 //     );
 //   }
+
 //   // GestureDetector _buildMuteButton(
 //   //   VideoPlayerController controller,
 //   // ) {
@@ -335,10 +258,28 @@ class _VideoScreenState extends State<VideoScreen> {
 //   //     ),
 //   //   );
 //   // }
-
 //   GestureDetector _buildRefreshButton(VideoPlayerController controller) {
 //     return GestureDetector(
-//       onTap: widget.onTap,
+//       onTap: () {
+//         setState(() {
+//           if (controller != null) {
+//             controller.dispose();
+//           }
+//           if (chewieController != null) {
+//             chewieController.dispose();
+//           }
+//           controller=new VideoPlayerController.network(
+//                   "http://tx2play1.douyucdn.cn/live/1863767rkpl.flv");
+//           chewieController = ChewieController(
+//               videoPlayerController: new VideoPlayerController.network(
+//                   "http://tx2play1.douyucdn.cn/live/1863767rkpl.flv"),
+//               aspectRatio: 16 / 9,
+//               autoPlay: true,
+//               isLive: true,
+//               looping: false,
+//               customControls: MyChewieMaterialControls(() {}));
+//         });
+//       },
 //       child: Container(
 //         height: barHeight,
 //         color: Colors.transparent,
@@ -375,6 +316,7 @@ class _VideoScreenState extends State<VideoScreen> {
 //   }
 
 //   Widget _buildPosition(Color iconColor) {
+//     //TODO 添加弹幕监听器
 //     final position = _latestValue != null && _latestValue.position != null
 //         ? _latestValue.position
 //         : Duration.zero;
@@ -402,9 +344,9 @@ class _VideoScreenState extends State<VideoScreen> {
 //   }
 
 //   Future<Null> _initialize() async {
-//     // controller.addListener(_updateState);
+//     controller.addListener(_updateState);
 
-//     // _updateState();
+//     _updateState();
 
 //     if ((controller.value != null && controller.value.isPlaying) ||
 //         chewieController.autoPlay) {
@@ -436,7 +378,7 @@ class _VideoScreenState extends State<VideoScreen> {
 //   void _playPause() {
 //     bool isFinished = _latestValue.position >= _latestValue.duration;
 
-//       setState(() {
+//     setState(() {
 //       if (controller.value.isPlaying) {
 //         _hideStuff = false;
 //         _hideTimer?.cancel();
@@ -466,31 +408,36 @@ class _VideoScreenState extends State<VideoScreen> {
 //     });
 //   }
 
-//   // //TODO 监听弹幕
-//   // void _updateState() {
-//   //   setState(() {
-//   //     _latestValue = controller.value;
-//   //     //同步音频视频
-//   //     //print("widget.audioController.value.isPlaying ${widget.audioController.value.isPlaying}");
-//   //     if (widget.audioController != null &&
-//   //         abs(widget.audioController.value.position.inMilliseconds -
-//   //                 controller.value.position.inMilliseconds) >
-//   //             600 &&
-//   //         (_lastSync == null ||
-//   //             DateTime.now().difference(_lastSync).inMilliseconds > 5000)) {
-//   //       widget.audioController?.seekTo(controller.value.position);
-//   //       widget.audioController?.play();
-//   //       _lastSync = DateTime.now();
-//   //     }
-//   //   });
-//   // }
+//   void _updateState() {
+//     setState(() {
+//       _latestValue = controller.value;
+//     });
+//   }
 
-//   //绝对值
-//   int abs(int n) {
-//     if (n < 0) {
-//       return -n;
-//     } else {
-//       return n;
-//     }
+//   Widget _buildProgressBar() {
+//     return Expanded(
+//       child: Padding(
+//         padding: EdgeInsets.only(right: 20.0),
+//         child: MaterialVideoProgressBar(controller, onDragStart: () {
+//           setState(() {
+//             _dragging = true;
+//           });
+
+//           _hideTimer?.cancel();
+//         }, onDragEnd: () {
+//           setState(() {
+//             _dragging = false;
+//           });
+
+//           _startHideTimer();
+//         },
+//             colors: ChewieProgressColors(
+//               playedColor: Theme.of(context).primaryColor,
+//               handleColor: Colors.white,
+//               bufferedColor: Colors.white70,
+//               backgroundColor: Colors.white30,
+//             )),
+//       ),
+//     );
 //   }
 // }

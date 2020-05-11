@@ -263,17 +263,34 @@ class __FijkPanel2State extends State<_FijkPanel2> {
     _brightness = null;
   }
 
-  Widget buildPlayButton(BuildContext context, double height) {
-    Icon icon = (player.state == FijkState.started)
-        ? Icon(Icons.pause)
-        : Icon(Icons.play_arrow);
+  // Widget buildPlayButton(BuildContext context, double height) {
+  //   Icon icon = (player.state == FijkState.started)
+  //       ? Icon(Icons.pause)
+  //       : Icon(Icons.play_arrow);
+  //   bool fullScreen = player.value.fullScreen;
+  //   return IconButton(
+  //     padding: EdgeInsets.all(0),
+  //     iconSize: fullScreen ? height : height * 0.8,
+  //     color: Color(0xFFFFFFFF),
+  //     icon: icon,
+  //     onPressed: playOrPause,
+  //   );
+  // }
+
+  Future<void> onRefresh() async {
+    String dataSource = player.dataSource;
+    await player.reset();
+    await player.setDataSource(dataSource,autoPlay: true);
+  }
+
+  Widget buildRefreshButton(BuildContext context, double height) {
     bool fullScreen = player.value.fullScreen;
     return IconButton(
       padding: EdgeInsets.all(0),
       iconSize: fullScreen ? height : height * 0.8,
       color: Color(0xFFFFFFFF),
-      icon: icon,
-      onPressed: playOrPause,
+      icon: Icon(Icons.refresh),
+      onPressed: onRefresh,
     );
   }
 
@@ -338,7 +355,7 @@ class __FijkPanel2State extends State<_FijkPanel2> {
     if (_duration != null && _duration.inMilliseconds > 0) {
       return Row(
         children: <Widget>[
-          buildPlayButton(context, height),
+          buildRefreshButton(context, height),
           buildTimeText(context, height),
           Expanded(child: buildSlider(context)),
           buildFullScreenButton(context, height),
@@ -347,7 +364,7 @@ class __FijkPanel2State extends State<_FijkPanel2> {
     } else {
       return Row(
         children: <Widget>[
-          buildPlayButton(context, height),
+          buildRefreshButton(context, height),
           Expanded(child: Container()),
           buildFullScreenButton(context, height),
         ],
