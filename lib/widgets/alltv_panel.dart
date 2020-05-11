@@ -10,6 +10,7 @@ FijkPanelWidgetBuilder allTVPanelBuilder(
     final int duration = 4000,
     final bool doubleTap = true,
     final bool snapShot = false,
+    final String title = '',
     final VoidCallback onBack}) {
   return (FijkPlayer player, FijkData data, BuildContext context, Size viewSize,
       Rect texturePos) {
@@ -23,6 +24,7 @@ FijkPanelWidgetBuilder allTVPanelBuilder(
       fill: fill,
       doubleTap: doubleTap,
       snapShot: snapShot,
+      title: title,
       hideDuration: duration,
     );
   };
@@ -37,6 +39,7 @@ class _FijkPanel2 extends StatefulWidget {
   final bool fill;
   final bool doubleTap;
   final bool snapShot;
+  final String title;
   final int hideDuration;
 
   const _FijkPanel2(
@@ -49,7 +52,8 @@ class _FijkPanel2 extends StatefulWidget {
       this.hideDuration,
       this.doubleTap,
       this.snapShot,
-      this.texPos})
+      this.texPos,
+      this.title = 'this is title'})
       : assert(player != null),
         assert(
             hideDuration != null && hideDuration > 0 && hideDuration < 10000),
@@ -263,24 +267,24 @@ class __FijkPanel2State extends State<_FijkPanel2> {
     _brightness = null;
   }
 
-  // Widget buildPlayButton(BuildContext context, double height) {
-  //   Icon icon = (player.state == FijkState.started)
-  //       ? Icon(Icons.pause)
-  //       : Icon(Icons.play_arrow);
-  //   bool fullScreen = player.value.fullScreen;
-  //   return IconButton(
-  //     padding: EdgeInsets.all(0),
-  //     iconSize: fullScreen ? height : height * 0.8,
-  //     color: Color(0xFFFFFFFF),
-  //     icon: icon,
-  //     onPressed: playOrPause,
-  //   );
-  // }
+  Widget buildPlayButton(BuildContext context, double height) {
+    Icon icon = (player.state == FijkState.started)
+        ? Icon(Icons.pause)
+        : Icon(Icons.play_arrow);
+    bool fullScreen = player.value.fullScreen;
+    return IconButton(
+      padding: EdgeInsets.all(0),
+      iconSize: fullScreen ? height : height * 0.8,
+      color: Color(0xFFFFFFFF),
+      icon: icon,
+      onPressed: playOrPause,
+    );
+  }
 
   Future<void> onRefresh() async {
     String dataSource = player.dataSource;
     await player.reset();
-    await player.setDataSource(dataSource,autoPlay: true);
+    await player.setDataSource(dataSource, autoPlay: true);
   }
 
   Widget buildRefreshButton(BuildContext context, double height) {
@@ -351,10 +355,106 @@ class __FijkPanel2State extends State<_FijkPanel2> {
     );
   }
 
+  /// TODO 增加顶部样式
+  //  顶部的导航返回按钮
+  Widget buildNaviBack(BuildContext context, double height) {
+    return Container(
+//      color: Colors.deepOrangeAccent,
+      child: IconButton(
+        padding: EdgeInsets.only(left: 26, right: 20),
+        icon: Icon(
+          Icons.arrow_back,
+          size: height,
+        ),
+        onPressed: () {
+          if (player.value.fullScreen) {
+            player.exitFullScreen();
+          }
+
+          // The delay fixes it
+          Future.delayed(Duration(milliseconds: 200)).then((_) {
+            Navigator.pop(context);
+          });
+        },
+      ),
+    );
+  }
+
+  // 文本样式
+  TextStyle _textStyle = TextStyle(fontSize: 16, color: Color(0xFFFFFFFF));
+  Widget buildNaviTitle(BuildContext context, double height) {
+    return Text(
+      widget.title,
+      style: _textStyle,
+    );
+  }
+
+  // Widget buildNaviCollect(BuildContext context, double height) {
+  //   return IconButton(
+  //     icon: Icon(_isFavorite
+  //           ? Icons.favorite
+  //           : Icons.favorite_border,
+
+  //     ),
+  //     onPressed: () {},
+  //   );
+  // }
+
+  Widget buildNaviMore(BuildContext context, double height) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: 30,
+        right: 40,
+      ),
+      child: GestureDetector(
+        onTap: () {
+          Future.wait([
+            FijkVolume.getVol().then((v) {
+              return v;
+            }),
+            FijkPlugin.screenBrightness().then((v) {
+              return v;
+            })
+          ]).then((results) {
+            // showDialog(
+            //     context: context,
+            //     barrierDismissible: false,
+            //     builder: (BuildContext context) {
+            //       return SideBarPlayLight(
+            //         curVolume: results[0] ?? 0,
+            //         curLight: results[1] ?? 0,
+            //         onCloseEvent: () {
+            //           Navigator.pop(context, '1');
+            //         },
+            //         didChangeVolume: (double oldNum, double newNum) {
+            //           _volume = newNum;
+            //           FijkVolume.setVol(_volume);
+            //           print('haha=didChangeVolume-old:$oldNum,new:$newNum');
+            //         },
+            //         didChangeLight: (double oldNum, double newNum) {
+            //           _brightness = newNum;
+            //           FijkPlugin.setScreenBrightness(_brightness);
+            //           print('haha=didChangeLight-old:$oldNum,new:$newNum');
+            //         },
+            //       );
+            //     });
+          }).catchError((e) {
+            // showToast(e.toString());
+          });
+        },
+        child: Icon(
+          Icons.more_horiz,
+          size: height,
+        ),
+      ),
+    );
+  }
+
   Widget buildBottom(BuildContext context, double height) {
     if (_duration != null && _duration.inMilliseconds > 0) {
       return Row(
         children: <Widget>[
+          buildPlayButton(context, height),
           buildRefreshButton(context, height),
           buildTimeText(context, height),
           Expanded(child: buildSlider(context)),
@@ -364,12 +464,32 @@ class __FijkPanel2State extends State<_FijkPanel2> {
     } else {
       return Row(
         children: <Widget>[
+          buildPlayButton(context, height),
           buildRefreshButton(context, height),
           Expanded(child: Container()),
           buildFullScreenButton(context, height),
         ],
       );
     }
+  }
+
+  Widget buildTop(BuildContext context, double height) {
+    // if (_isLocked) {
+    //   // if locked, fixed screen and hidden all other controls
+    //   return Container();
+    // }
+
+    return Row(
+      children: <Widget>[
+        buildNaviBack(context, height),
+        buildNaviTitle(context, height),
+        Expanded(
+          child: Container(),
+        ),
+        // buildNaviCollect(context, height),
+        buildNaviMore(context, height),
+      ],
+    );
   }
 
   void takeSnapshot() {
