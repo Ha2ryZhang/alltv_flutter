@@ -1,11 +1,11 @@
 buildscript {
     ext.kotlin_version = '1.3.50'
     repositories {
-        // maven { url 'https://maven.aliyun.com/repository/google' }
-        // maven { url 'https://maven.aliyun.com/repository/jcenter' }
-        // maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
-        google()
-        jcenter { url "https://jcenter.bintray.com"}
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
+        // google()
+        // jcenter { url "https://jcenter.bintray.com"}
     }
 
     dependencies {
@@ -16,11 +16,11 @@ buildscript {
 
 allprojects {
     repositories {
-        // maven { url 'https://maven.aliyun.com/repository/google' }
-        // maven { url 'https://maven.aliyun.com/repository/jcenter' }
-        // maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
-        google()
-        jcenter { url "https://jcenter.bintray.com"}
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public' }
+        // google()
+        // jcenter { url "https://jcenter.bintray.com"}
     }
 }
 

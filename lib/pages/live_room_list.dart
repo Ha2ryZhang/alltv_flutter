@@ -3,6 +3,9 @@ import 'package:alltv/model/live_room.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
+import '../route/Application.dart';
+import '../route/navigator_util.dart';
+
 class LiveList extends StatefulWidget {
   //分类id
   final String cid;
@@ -127,7 +130,9 @@ class _LiveListState extends State<LiveList>
     return Card(
         child: InkWell(
             splashColor: Colors.blue.withAlpha(30),
-            onTap: () {},
+            onTap: () {
+              NavigatorUtil.jump(context, "livePage");
+            },
             child: Column(
               children: <Widget>[
                 stack,
