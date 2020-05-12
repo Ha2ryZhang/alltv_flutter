@@ -3,7 +3,6 @@ import 'package:alltv/model/live_room.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../route/Application.dart';
 import '../route/navigator_util.dart';
 
 class LiveList extends StatefulWidget {
@@ -131,7 +130,7 @@ class _LiveListState extends State<LiveList>
         child: InkWell(
             splashColor: Colors.blue.withAlpha(30),
             onTap: () {
-              NavigatorUtil.jump(context, "livePage");
+              NavigatorUtil.goLiveoRoom(context, room.roomId, room.com, room.realUrl);
             },
             child: Column(
               children: <Widget>[

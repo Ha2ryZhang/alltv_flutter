@@ -28,11 +28,16 @@ class _LivePageState extends State<LivePage> {
     super.initState();
     player.setOption(FijkOption.hostCategory, "enable-snapshot", 1);
     player.setOption(FijkOption.playerCategory, "mediacodec-all-videos", 1);
-    startPlay();
+    initRoom();
   }
 
-  void initRoom() async {
-    url = await API.getLiveUrl(widget.roomId, widget.com);
+  void initRoom() {
+    API.getLiveUrl(widget.roomId, widget.com).then((value) {
+      setState(() {
+        url = value;
+      });
+      startPlay();
+    });
   }
 
   void startPlay() async {

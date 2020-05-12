@@ -14,7 +14,7 @@ class API {
   }
 
   static Future<String> getLiveUrl(String roomId, String com) async {
-    var json = await HttpManager.getInstance().get('/' + com + '/' + roomId);
+    var json = await HttpManager.getInstance().get('/' + com + '/real_url/' + roomId);
     var data = json['data'];
     return data['realUrl'];
   }
