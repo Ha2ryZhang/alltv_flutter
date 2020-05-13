@@ -73,10 +73,10 @@ class RecommendationState extends State<Recommendation>
     });
 
     return TabBar(
-      tabs: widgets,
-      isScrollable: true,
-      controller: _tabController,
-    );
+        tabs: widgets,
+        isScrollable: true,
+        controller: _tabController,
+        indicatorColor: Colors.white);
   }
 
   List<Widget> buildTabViewItem() {

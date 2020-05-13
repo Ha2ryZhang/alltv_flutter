@@ -67,21 +67,32 @@ class _LiveListState extends State<LiveList>
     switch (com) {
       case 'douyu':
         return "斗鱼";
+      case 'bilibili':
+        return "B站";
       default:
         return "未知";
     }
   }
 
   Widget buildCard(LiveRoom room) {
+    var width = MediaQuery.of(context).size.width;
     var stack = new Stack(
       alignment: AlignmentDirectional.bottomCenter,
       children: [
         CachedNetworkImage(
           imageUrl: room.roomThumb,
           fit: BoxFit.fitWidth,
-          width: MediaQuery.of(context).size.width,
-          placeholder: (context, url) => CircularProgressIndicator(),
-          errorWidget: (context, url, error) => Icon(Icons.error),
+          width: width,
+          placeholder: (context, url) => Image.asset(
+            "assets/images/cache.png",
+            fit: BoxFit.fitWidth,
+            width: width,
+          ),
+          errorWidget: (context, url, error) => Image.asset(
+            "assets/images/cache.png",
+            fit: BoxFit.fitWidth,
+            width: width,
+          ),
         ),
         new Container(
             width: 400,
@@ -130,7 +141,8 @@ class _LiveListState extends State<LiveList>
         child: InkWell(
             splashColor: Colors.blue.withAlpha(30),
             onTap: () {
-              NavigatorUtil.goLiveoRoom(context, room.roomId, room.com, room.realUrl);
+              NavigatorUtil.goLiveoRoom(
+                  context, room.roomId, room.com, room.realUrl);
             },
             child: Column(
               children: <Widget>[

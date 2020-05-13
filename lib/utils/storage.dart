@@ -25,6 +25,14 @@ class StorageUtil {
     return jsonString == null ? null : jsonDecode(jsonString);
   }
 
+  Future<bool> setString(String key, String val) {
+    return _prefs.setString(key, val);
+  }
+
+  String getString(String key) {
+    return _prefs.getString(key);
+  }
+
   Future<bool> setBool(String key, bool val) {
     return _prefs.setBool(key, val);
   }
