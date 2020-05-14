@@ -2,6 +2,7 @@ import 'package:alltv/pages/recommendation.dart';
 import 'package:flutter/material.dart';
 import 'package:alltv/pages/second.dart';
 import 'package:alltv/pages/third.dart';
+import 'package:alltv/pages/search.dart';
 
 class AllTVHome extends StatefulWidget {
   @override
@@ -15,7 +16,7 @@ class AllTVHomeState extends State<AllTVHome>
   List<Widget> _pageList = [
     Recommendation(),
     SecondTab(),
-    SecondTab(),
+    SearchTab(),
     ThirdTab(),
   ];
 

@@ -123,7 +123,7 @@ class NightMode extends StatelessWidget{
         title: Text("夜间模式",style: TextStyle(fontSize: 16.0),),
         trailing: Switch(
               value: check, 
-              onChanged: (bool val) {
+              onChanged: (bool check) {
                 check = !check;
               },
               activeColor: Colors.blue,
