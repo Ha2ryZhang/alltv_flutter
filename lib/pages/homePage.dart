@@ -1,7 +1,6 @@
 import 'package:alltv/pages/recommendation.dart';
 import 'package:flutter/material.dart';
 import 'package:alltv/pages/second.dart';
-import 'package:alltv/pages/third.dart';
 import 'package:alltv/pages/search.dart';
 import 'package:alltv/pages/my.dart';
 class AllTVHome extends StatefulWidget {
@@ -17,7 +16,7 @@ class AllTVHomeState extends State<AllTVHome>
     Recommendation(),
     SecondTab(),
     SearchTab(),
-    ThirdTab(),
+    MyTab()
   ];
 
   List<BottomNavigationBarItem> _barItem = [
