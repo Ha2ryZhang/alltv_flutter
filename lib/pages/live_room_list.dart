@@ -1,7 +1,9 @@
 import 'package:alltv/http/api.dart';
 import 'package:alltv/model/live_room.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../route/navigator_util.dart';
 
@@ -16,33 +18,61 @@ class LiveList extends StatefulWidget {
 
 class _LiveListState extends State<LiveList>
     with AutomaticKeepAliveClientMixin {
-  List<LiveRoom> _liveRooms;
-
+  List<LiveRoom> _liveRooms = [];
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: true);
+  //目前后台第一页是0
+  int _pageNum = 0;
   @override
   void initState() {
     super.initState();
-    loadData(widget.cid);
   }
 
-  loadData(String cid) async {
-    var list = await API.getRecommend(cid);
+  @override
+  void dispose() {
+    _refreshController.dispose();
+    super.dispose();
+  }
+
+  /// 下拉刷新
+  void _onRefresh() async {
+    var list = await API.getRecommend(widget.cid, 0);
     setState(() {
-      _liveRooms = new List();
       _liveRooms = list;
     });
+    if (_liveRooms != null) {
+      _refreshController.refreshCompleted();
+    } else {
+      _refreshController.refreshFailed();
+    }
+  }
+
+  ///上拉加载
+  /// TODO 修复 后台是 offset 不是page限制
+  void _onLoading() async {
+    var list = await API.getRecommend(widget.cid, _pageNum + 1);
+    setState(() {
+      _pageNum++;
+      _liveRooms.addAll(list);
+    });
+    _refreshController.loadComplete();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    if (_liveRooms == null) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-    return RefreshIndicator(
+    return SmartRefresher(
+      enablePullDown: true,
+      enablePullUp: true,
+      controller: _refreshController,
       onRefresh: _onRefresh,
+      onLoading: _onLoading,
+      footer: ClassicFooter(
+        loadStyle: LoadStyle.ShowWhenLoading,
+        loadingText: "Loading",
+      ),
       child: ListView.builder(
+          physics: BouncingScrollPhysics(),
           itemCount: _liveRooms.length,
           itemBuilder: (context, index) {
             return buildCard(_liveRooms[index]);
@@ -56,11 +86,6 @@ class _LiveListState extends State<LiveList>
       list.add(buildCard(room));
     });
     return list;
-  }
-
-  Future<Null> _onRefresh() async {
-    loadData(widget.cid);
-    return;
   }
 
   String convertCom(String com) {

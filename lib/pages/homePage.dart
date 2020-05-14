@@ -1,8 +1,9 @@
+import 'package:alltv/pages/my.dart';
 import 'package:alltv/pages/recommendation.dart';
 import 'package:flutter/material.dart';
 import 'package:alltv/pages/second.dart';
 import 'package:alltv/pages/search.dart';
-import 'package:alltv/pages/my.dart';
+
 class AllTVHome extends StatefulWidget {
   @override
   AllTVHomeState createState() => AllTVHomeState();
@@ -16,7 +17,7 @@ class AllTVHomeState extends State<AllTVHome>
     Recommendation(),
     SecondTab(),
     SearchTab(),
-    MyTab()
+    ThirdTab()
   ];
 
   List<BottomNavigationBarItem> _barItem = [
@@ -42,7 +43,10 @@ class AllTVHomeState extends State<AllTVHome>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: this._pageList[this._currentIndex],
+      body: IndexedStack(
+        index: _currentIndex,
+        children: this._pageList,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (int index) {
           setState(() {

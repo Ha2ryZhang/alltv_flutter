@@ -2,8 +2,9 @@ import 'package:alltv/http/dio_util.dart';
 import 'package:alltv/model/live_room.dart';
 
 class API {
-  static Future<List<LiveRoom>> getRecommend(String cid) async {
-    var json = await HttpManager.getInstance().get('/top/live/' + cid);
+  static Future<List<LiveRoom>> getRecommend(String cid, int pageNum) async {
+    var json = await HttpManager.getInstance()
+        .get('/top/live/' + cid, params: {"pageNum": pageNum});
     List list = json["data"];
     List<LiveRoom> liveList = [];
     list.forEach((live) {
@@ -14,7 +15,8 @@ class API {
   }
 
   static Future<String> getLiveUrl(String roomId, String com) async {
-    var json = await HttpManager.getInstance().get('/' + com + '/real_url/' + roomId);
+    var json =
+        await HttpManager.getInstance().get('/' + com + '/real_url/' + roomId);
     var data = json['data'];
     return data['realUrl'];
   }
