@@ -3,7 +3,6 @@ import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
 
 import '../http/api.dart';
-import '../http/api.dart';
 
 // import 'custom_ui.dart';
 

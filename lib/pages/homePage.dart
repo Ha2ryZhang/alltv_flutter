@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:alltv/pages/second.dart';
 import 'package:alltv/pages/third.dart';
 import 'package:alltv/pages/search.dart';
-
+import 'package:alltv/pages/my.dart';
 class AllTVHome extends StatefulWidget {
   @override
   AllTVHomeState createState() => AllTVHomeState();
@@ -27,7 +27,7 @@ class AllTVHomeState extends State<AllTVHome>
         ),
         title: Container()),
     BottomNavigationBarItem(icon: Icon(Icons.favorite), title: Container()),
-     BottomNavigationBarItem(icon: Icon(Icons.search), title: Container()),
+    BottomNavigationBarItem(icon: Icon(Icons.search), title: Container()),
     BottomNavigationBarItem(icon: Icon(Icons.person), title: Container()),
   ];
   @override

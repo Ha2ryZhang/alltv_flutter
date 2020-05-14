@@ -18,6 +18,9 @@ class Global {
   /// 自定义分类列表,
   static CategoryList categories = new CategoryList();
 
+  // 主题信息
+  static ThemeInfo themeInfo = new ThemeInfo();
+
   /// init
   static Future init() async {
     // 运行初始
@@ -31,14 +34,19 @@ class Global {
     Routes.configureRoutes(router);
     Application.router = router;
 
-    //初始化网络请求
-    
-
     // 读取设备第一次打开
     isFirstOpen = !StorageUtil().getBool(STORAGE_DEVICE_ALREADY_OPEN_KEY);
     if (isFirstOpen) {
       StorageUtil().setBool(STORAGE_DEVICE_ALREADY_OPEN_KEY, true);
     }
+    //读取主题信息
+
+    String themeColor = StorageUtil().getString(THEME_INFO);
+
+    themeColor == null
+        ? themeInfo.setTheme('blue')
+        : themeInfo.setTheme(themeColor);
+
     //读取分类信息 没有的话给个默认值
 
     List _categoriesJSON = StorageUtil().getJSON(RECOMMENDATION_CATEGORY_LIST);
