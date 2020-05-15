@@ -35,7 +35,7 @@ class _LiveListState extends State<LiveList>
 
   /// 下拉刷新
   void _onRefresh() async {
-    var list = await API.getRecommend(widget.cid, 0);
+    var list = await API.getRecommend(widget.cid, 1);
     setState(() {
       _liveRooms = list;
     });

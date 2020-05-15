@@ -65,12 +65,14 @@ class Global {
       Category c3 = new Category(cid: '1', name: "英雄联盟");
       Category c4 = new Category(cid: '270', name: "绝地求生");
       Category c5 = new Category(cid: '311', name: "颜值");
+      Category c6 = new Category(cid: '1008', name: "舞蹈");
       List<Category> list = [];
       list.add(c1);
       list.add(c2);
       list.add(c3);
       list.add(c4);
       list.add(c5);
+      list.add(c6);
       categories.setCategories(list);
       //保存localstorage
       StorageUtil().setJSON(RECOMMENDATION_CATEGORY_LIST, list);

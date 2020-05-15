@@ -21,7 +21,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   startHome() async {
-    await Future.delayed(const Duration(milliseconds: 2000), () {
+    await Future.delayed(const Duration(milliseconds: 1000), () {
       NavigatorUtil.goHomePage(context);
     });
   }
@@ -45,7 +45,7 @@ class _SplashPageState extends State<SplashPage> {
                 "今天你的操作下饭了吗？",
                 style: TextStyle(color: Colors.grey),
               ),
-               Text(
+              Text(
                 "All TV",
                 style: TextStyle(color: Colors.grey),
               )

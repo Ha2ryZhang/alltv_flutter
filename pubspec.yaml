@@ -25,6 +25,8 @@ dependencies:
   # 网络请求
   dio: ^3.0.9
   cached_network_image: ^2.2.0
+  #websocket
+  web_socket_channel: ^1.1.0
   # 视频播放
   # chewie: ^0.9.10
   # video_player: ^0.10.10 
