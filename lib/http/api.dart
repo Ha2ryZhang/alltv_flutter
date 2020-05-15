@@ -48,9 +48,7 @@ class API {
           }
         }
         String url = list[0];
-        return "https://cn-hbxy-cmcc-live-01.live-play.acgvideo.com/live-bvc" +
-            url.substring(
-                url.indexOf("/live_"), url.indexOf(".m3u8") + ".m3u8".length);
+        return url;
       }
       return null;
     } catch (e) {

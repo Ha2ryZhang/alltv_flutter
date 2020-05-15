@@ -61,17 +61,27 @@ class _LivePageState extends State<LivePage> {
 
     return Scaffold(
       body: Container(
-        child: Center(
-          child: FijkView(
-            player: player,
-            color: Colors.black,
-            panelBuilder: allTVPanelBuilder(snapShot: true, doubleTap: false),
-          ),
-        ),
-      ),
+          //状态栏颜色
+          color: Colors.black54,
+          child: SafeArea(
+            child: Row(
+              children: <Widget>[buildPlayer()],
+            ),
+          )),
     );
   }
 
+  Widget buildPlayer() {
+    return FijkView(
+      width: MediaQuery.of(context).size.width,
+      height: 240,
+      player: player,
+      color: Colors.black,
+      fit: FijkFit.fitWidth,
+      panelBuilder: allTVPanelBuilder(snapShot: true, doubleTap: false),
+    );
+  }
+  
   @override
   void dispose() {
     super.dispose();

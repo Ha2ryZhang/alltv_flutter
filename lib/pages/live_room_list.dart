@@ -97,6 +97,14 @@ class _LiveListState extends State<LiveList>
     }
   }
 
+  String convertOnline(int online){
+    if(online>=10000){
+      //dart 截断运算符
+      return (online~/10000).toString()+"万";
+    }
+    return online.toString();
+  }
+
   Widget buildCard(LiveRoom room) {
     var width = MediaQuery.of(context).size.width;
     var stack = new Stack(
@@ -149,7 +157,7 @@ class _LiveListState extends State<LiveList>
                   size: 20,
                 ),
                 new Text(
-                  room.online.toString(),
+                  convertOnline(room.online),
                   style: new TextStyle(
                     fontSize: 15,
                     color: Colors.white,
