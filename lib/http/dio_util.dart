@@ -1,3 +1,4 @@
+import 'package:alltv/utils/toast.dart';
 import 'package:dio/dio.dart';
 
 class HttpManager {
@@ -114,17 +115,17 @@ class HttpManager {
 
   void formatError(DioError e) {
     if (e.type == DioErrorType.CONNECT_TIMEOUT) {
-      print("连接超时");
+      showToast("连接超时");
     } else if (e.type == DioErrorType.SEND_TIMEOUT) {
-      print("请求超时");
+      showToast("请求超时");
     } else if (e.type == DioErrorType.RECEIVE_TIMEOUT) {
-      print("响应超时");
+      showToast("响应超时");
     } else if (e.type == DioErrorType.RESPONSE) {
-      print("出现异常");
+      showToast("出现异常");
     } else if (e.type == DioErrorType.CANCEL) {
-      print("请求取消");
+      showToast("请求取消");
     } else {
-      print("未知错误");
+      showToast("网络好像出问题了");
     }
   }
 }

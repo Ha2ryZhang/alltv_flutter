@@ -21,8 +21,7 @@ class _LiveListState extends State<LiveList>
   List<LiveRoom> _liveRooms = [];
   RefreshController _refreshController =
       RefreshController(initialRefresh: true);
-  //目前后台第一页是0
-  int _pageNum = 0;
+  int _pageNum = 1;
   @override
   void initState() {
     super.initState();
@@ -48,7 +47,6 @@ class _LiveListState extends State<LiveList>
   }
 
   ///上拉加载
-  /// TODO 修复 后台是 offset 不是page限制
   void _onLoading() async {
     var list = await API.getRecommend(widget.cid, _pageNum + 1);
     setState(() {
