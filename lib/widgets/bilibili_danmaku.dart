@@ -115,17 +115,17 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
             case "DANMU_MSG":
               String msg = jd["info"][1].toString();
               String name = jd["info"][2][1].toString();
-              print("$name 说： $msg");
+              // print("$name 说： $msg");
               addDanmaku(LiveDanmakuItem(name, msg));
               break;
-            case "SEND_GIFT":
-              String name = jd["data"]["uname"].toString();
-              String action = jd["data"]["action"].toString();
-              String msg = jd["data"]["giftName"].toString();
-              int count = jd["data"]["num"];
-              print("$name $action $count 个 $msg");
-              addGift(GiftItem(name, action, count, msg));
-              break;
+            // case "SEND_GIFT":
+            //   String name = jd["data"]["uname"].toString();
+            //   String action = jd["data"]["action"].toString();
+            //   String msg = jd["data"]["giftName"].toString();
+            //   int count = jd["data"]["num"];
+            //   print("$name $action $count 个 $msg");
+            //   addGift(GiftItem(name, action, count, msg));
+            //   break;
             default:
           }
         }
@@ -165,18 +165,18 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
 
   void addGift(GiftItem item) {
     setState(() {
-      _messageList.insert(0, item);
+      _messageList.add(item);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      body: ListView.builder(
+    return ListView.builder(
+        itemCount: _messageList.length,
+        padding: const EdgeInsets.only(left: 5, top: 2, right: 5),
         reverse: true,
         shrinkWrap: true,
-        itemCount: _messageList.length,
         itemBuilder: (context, i) {
           Widget item;
           if (_messageList[i] is LiveDanmakuItem) {
@@ -219,9 +219,7 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
             );
           }
           return item;
-        },
-      ),
-    );
+        });
   }
 }
 

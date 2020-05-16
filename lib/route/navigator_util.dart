@@ -1,5 +1,6 @@
 import 'package:alltv/route/Application.dart';
 import 'package:alltv/route/routes.dart';
+import 'package:alltv/utils/fluro_convert_util.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 
@@ -73,11 +74,26 @@ class NavigatorUtil {
     /// 时间
   }
 
-  static Future goLiveoRoom(BuildContext context, String roomId,String com,String url) {
-    return Application.router
-        .navigateTo(context, Routes.livePage+"?roomId=$roomId&com=$com&url=$url", transition: TransitionType.inFromRight);
-
-    /// 指定了 转场动画
+  static Future goLiveoRoom(
+      BuildContext context,
+      String roomId,
+      String com,
+      String roomThumb,
+      String avatar,
+      String roomName,
+      String ownerName,
+      String cateName) {
+    //fluro 不支持中文传参 事实证明英文字符也不行
+    String encodeRoomThumb = FluroConvertUtils.fluroCnParamsEncode(roomThumb);
+    String encodeAvatar = FluroConvertUtils.fluroCnParamsEncode(avatar);
+    String encodeRoomName = FluroConvertUtils.fluroCnParamsEncode(roomName);
+    String encodeOwnerName = FluroConvertUtils.fluroCnParamsEncode(ownerName);
+    String encodeCateName = FluroConvertUtils.fluroCnParamsEncode(cateName);
+    return Application.router.navigateTo(
+        context,
+        Routes.livePage +
+            "?roomId=$roomId&com=$com&roomThumb=$encodeRoomThumb&avatar=$encodeAvatar&roomName=$encodeRoomName&ownerName=$encodeOwnerName&cateName=$encodeCateName",
+        transition: TransitionType.inFromRight);
   }
 
   // /// 使用 IOS 的 Cupertino 的转场动画，这个是修改了源码的 转场动画

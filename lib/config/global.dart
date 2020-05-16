@@ -33,7 +33,6 @@ class Global {
     Router router = Router();
     Routes.configureRoutes(router);
     Application.router = router;
-
     // 读取设备第一次打开
     isFirstOpen = !StorageUtil().getBool(STORAGE_DEVICE_ALREADY_OPEN_KEY);
     if (isFirstOpen) {

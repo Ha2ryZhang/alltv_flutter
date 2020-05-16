@@ -15,7 +15,7 @@ dependencies:
   # 状态管理
   provider: ^4.0.5+1
   # 屏幕适配
-  flutter_screenutil: ^1.0.2
+  flutter_screenutil: ^1.1.0
   # 路由管理
   fluro: "^1.6.3"
   # 下拉刷新

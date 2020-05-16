@@ -1,3 +1,4 @@
+import 'package:alltv/model/live_room.dart';
 import 'package:alltv/pages/homePage.dart';
 import 'package:alltv/pages/live_page.dart';
 import 'package:alltv/pages/splash_page.dart';
@@ -20,9 +21,15 @@ Handler homePageHanderl = Handler(
 // 路由传参
 Handler livePageHanderl = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  String roomId = params['roomId'].first;
-  String com = params['com'].first;
-  return LivePage(roomId: roomId, com: com);
+  LiveRoom liveRoom = new LiveRoom();
+  liveRoom.roomId = params['roomId'].first;
+  liveRoom.com = params['com'].first;
+  liveRoom.roomThumb = params['roomThumb'].first;
+  liveRoom.avatar = params['avatar'].first;
+  liveRoom.roomName = params['roomName'].first;
+  liveRoom.ownerName = params['ownerName'].first;
+  liveRoom.cateName = params['cateName'].first;
+  return LivePage(room: liveRoom);
 });
 
 // // 登陆页面

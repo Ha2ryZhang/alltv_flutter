@@ -2,8 +2,8 @@ import 'package:alltv/utils/toast.dart';
 import 'package:dio/dio.dart';
 
 class HttpManager {
-  final String baseurl = 'http://192.168.31.204:8888/api';
-  final int connectTimeout = 5000;
+  final String baseurl = 'http://debugers.com:8888/api';
+  final int connectTimeout = 10000;
   final int receiveTimeout = 3000;
 
   //单例模式
@@ -115,7 +115,7 @@ class HttpManager {
 
   void formatError(DioError e) {
     if (e.type == DioErrorType.CONNECT_TIMEOUT) {
-      showToast("连接超时");
+      showToast("网络好像出问题了");
     } else if (e.type == DioErrorType.SEND_TIMEOUT) {
       showToast("请求超时");
     } else if (e.type == DioErrorType.RECEIVE_TIMEOUT) {

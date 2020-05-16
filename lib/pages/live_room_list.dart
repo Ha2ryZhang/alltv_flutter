@@ -1,5 +1,6 @@
 import 'package:alltv/http/api.dart';
 import 'package:alltv/model/live_room.dart';
+import 'package:alltv/utils/common_convert.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,13 +36,15 @@ class _LiveListState extends State<LiveList>
 
   /// 下拉刷新
   void _onRefresh() async {
-    var list = await API.getRecommend(widget.cid, 1);
-    setState(() {
-      _liveRooms = list;
-    });
-    if (_liveRooms != null) {
-      _refreshController.refreshCompleted();
-    } else {
+    try {
+      var list = await API.getRecommend(widget.cid, 1);
+      setState(() {
+        _liveRooms = list;
+      });
+      if (_liveRooms != null) {
+        _refreshController.refreshCompleted();
+      }
+    } catch (e) {
       _refreshController.refreshFailed();
     }
   }
@@ -84,25 +87,6 @@ class _LiveListState extends State<LiveList>
       list.add(buildCard(room));
     });
     return list;
-  }
-
-  String convertCom(String com) {
-    switch (com) {
-      case 'douyu':
-        return "斗鱼";
-      case 'bilibili':
-        return "B站";
-      default:
-        return "未知";
-    }
-  }
-
-  String convertOnline(int online){
-    if(online>=10000){
-      //dart 截断运算符
-      return (online~/10000).toString()+"万";
-    }
-    return online.toString();
   }
 
   Widget buildCard(LiveRoom room) {
@@ -173,7 +157,14 @@ class _LiveListState extends State<LiveList>
             splashColor: Colors.blue.withAlpha(30),
             onTap: () {
               NavigatorUtil.goLiveoRoom(
-                  context, room.roomId, room.com, room.realUrl);
+                  context,
+                  room.roomId,
+                  room.com,
+                  room.roomThumb,
+                  room.avatar,
+                  room.roomName,
+                  room.ownerName,
+                  room.cateName);
             },
             child: Column(
               children: <Widget>[
