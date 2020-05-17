@@ -19,6 +19,12 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
   IOWebSocketChannel _channel;
   int totleTime = 0;
   List _messageList = [];
+  ScrollController _scrollController = ScrollController();
+
+  _scrollToBottom() {
+    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+  }
+
   @override
   void initState() {
     timer = Timer.periodic(Duration(seconds: 70), (callback) {
@@ -159,7 +165,7 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
 
   void addDanmaku(LiveDanmakuItem item) {
     setState(() {
-      _messageList.insert(0, item);
+      _messageList.add(item);
     });
   }
 
@@ -172,10 +178,12 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
     return ListView.builder(
+        controller: _scrollController,
         itemCount: _messageList.length,
         padding: const EdgeInsets.only(left: 5, top: 2, right: 5),
-        reverse: true,
+        // reverse: true,
         shrinkWrap: true,
         itemBuilder: (context, i) {
           Widget item;

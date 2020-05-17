@@ -16,21 +16,7 @@ class SearchBody extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
-      child: TextField(
-        decoration: InputDecoration(
-         hintText: "房间号 昵称",
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color:Colors.blue,
-              width: 2.0,
-            ),
-          ),
-          prefixIcon: Icon(Icons.search),
-        ),
-        textInputAction: TextInputAction.go,
-      )
+      child: Center(child: Text("开发正在日夜不眠的码功能！"),),
     );
   }
 }
-// TODO 鬼知道怎么写

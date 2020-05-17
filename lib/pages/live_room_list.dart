@@ -45,6 +45,7 @@ class _LiveListState extends State<LiveList>
         _refreshController.refreshCompleted();
       }
     } catch (e) {
+      print(e);
       _refreshController.refreshFailed();
     }
   }

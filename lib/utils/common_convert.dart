@@ -4,6 +4,8 @@ String convertCom(String com) {
       return "斗鱼";
     case 'bilibili':
       return "B站";
+    case 'huya':
+      return "虎牙";
     default:
       return "未知";
   }

@@ -2,6 +2,7 @@ import 'package:alltv/model/live_room.dart';
 import 'package:alltv/pages/homePage.dart';
 import 'package:alltv/pages/live_page.dart';
 import 'package:alltv/pages/splash_page.dart';
+import 'package:alltv/pages/theme_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 
@@ -31,7 +32,11 @@ Handler livePageHanderl = Handler(
   liveRoom.cateName = params['cateName'].first;
   return LivePage(room: liveRoom);
 });
-
+//主题设置
+Handler themeSettingHanderl = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return ThemeSetting();
+});
 // // 登陆页面
 // Handler loginHanderl = Handler(
 //     handlerFunc: (BuildContext context, Map<String, List<String>> params) {

@@ -30,6 +30,7 @@ class _LivePageState extends State<LivePage> {
   String ownerName;
   String cateName;
   _LivePageState();
+  //是否关注
   bool isFavorite = false;
   @override
   void initState() {
@@ -80,7 +81,7 @@ class _LivePageState extends State<LivePage> {
         children: <Widget>[
           buildPlayer(),
           buildRoomInfo(),
-          Expanded(child: Flexible(child: buildDanmakuList(widget.room.com))),
+          Expanded(child: buildDanmakuList(widget.room.com)),
         ],
       ),
     );
@@ -125,15 +126,14 @@ class _LivePageState extends State<LivePage> {
 
   void favoriteOrCancel() {
     setState(() {
-      isFavorite = !isFavorite;
+      isFavorite=!isFavorite;
     });
-
     ///TODO 添加到本地储存 后期云同步
     if (isFavorite) {
-      showToast("已关注");
+      showToast("关注成功");
     }
   }
-
+  
   Widget buildPlayer() {
     var width = MediaQuery.of(context).size.width;
     return Container(

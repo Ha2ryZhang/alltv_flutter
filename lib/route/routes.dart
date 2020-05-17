@@ -5,6 +5,7 @@ class Routes {
   static String root = "/";
   static String home = "/home";
   static String livePage = "/livePage";
+  static String themeSetting ="/themeSetting";
   static String returnParams = "/return_params";
 
   static void configureRoutes(Router router) {
@@ -18,5 +19,6 @@ class Routes {
     router.define(root, handler: splashPageHanderl);
     router.define(home, handler: homePageHanderl);
     router.define(livePage, handler: livePageHanderl);
+    router.define(themeSetting, handler: themeSettingHanderl);
   }
 }

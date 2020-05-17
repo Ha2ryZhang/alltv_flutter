@@ -10,7 +10,7 @@ class LiveRoom {
   String ownerName;
   String avatar;
   int online;
-  Null realUrl;
+  String realUrl;
 
   LiveRoom(
       {this.roomId,

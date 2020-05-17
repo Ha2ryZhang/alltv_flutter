@@ -17,7 +17,7 @@ class AllTVHomeState extends State<AllTVHome>
     Recommendation(),
     SecondTab(),
     SearchTab(),
-    ThirdTab()
+    MyPage()
   ];
 
   List<BottomNavigationBarItem> _barItem = [
