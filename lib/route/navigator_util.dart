@@ -96,6 +96,11 @@ class NavigatorUtil {
         transition: TransitionType.inFromRight);
   }
 
+  static Future goChanelDetail(BuildContext context, String com) {
+    return Application.router.navigateTo(
+        context, Routes.chanelDetail + "?com=$com",
+        transition: TransitionType.inFromRight);
+  }
   // /// 使用 IOS 的 Cupertino 的转场动画，这个是修改了源码的 转场动画
   // /// Fluro本身不带，但是 Flutter自带
   // static Future gotransitionCupertinoDemoPage(

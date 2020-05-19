@@ -51,12 +51,7 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
   //初始化
   void initLive() {
     _channel = IOWebSocketChannel.connect(
-        "wss://broadcastlv.chat.bilibili.com:2245/sub",
-        headers: {
-          "Host": "broadcastlv.chat.bilibili.com:2245",
-          "Sec-WebSocket-Version": " 13",
-          "Connection": " Upgrade",
-        });
+        "wss://broadcastlv.chat.bilibili.com:2245/sub");
     joinRoom(widget.roomId);
     setListener();
   }
@@ -68,7 +63,15 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
 
   //加入房间
   void joinRoom(int id) {
-    String msg = "{\"roomid\":$id}";
+    var uId = 1e14 + 2e14 * Random().nextDouble();
+    String msg = "{" +
+        "\"roomid\":$id" +
+        "\"uId\":$uId" +
+        "\"protover\":2" +
+        "\"platform\":\"web\"" +
+        "\"clientver\":\"1.10.6\"" +
+        "\"type\":2" +
+        "}";
     _channel.sink.add(encode(7, msg: msg));
   }
 

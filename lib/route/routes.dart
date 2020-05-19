@@ -5,8 +5,8 @@ class Routes {
   static String root = "/";
   static String home = "/home";
   static String livePage = "/livePage";
-  static String themeSetting ="/themeSetting";
-  static String returnParams = "/return_params";
+  static String themeSetting = "/themeSetting";
+  static String chanelDetail = '/chanelDetail';
 
   static void configureRoutes(Router router) {
     // router.notFoundHandler = new Handler(
@@ -20,5 +20,6 @@ class Routes {
     router.define(home, handler: homePageHanderl);
     router.define(livePage, handler: livePageHanderl);
     router.define(themeSetting, handler: themeSettingHanderl);
+    router.define(chanelDetail, handler: chanelDetailHanderl);
   }
 }

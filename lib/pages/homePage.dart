@@ -1,8 +1,8 @@
+import 'package:alltv/pages/chanel.dart';
 import 'package:alltv/pages/my.dart';
 import 'package:alltv/pages/recommendation.dart';
 import 'package:flutter/material.dart';
 import 'package:alltv/pages/second.dart';
-import 'package:alltv/pages/search.dart';
 
 class AllTVHome extends StatefulWidget {
   @override
@@ -16,7 +16,7 @@ class AllTVHomeState extends State<AllTVHome>
   List<Widget> _pageList = [
     Recommendation(),
     SecondTab(),
-    SearchTab(),
+    ChanelPage(),
     MyPage()
   ];
 
@@ -27,7 +27,7 @@ class AllTVHomeState extends State<AllTVHome>
         ),
         title: Container()),
     BottomNavigationBarItem(icon: Icon(Icons.favorite), title: Container()),
-    BottomNavigationBarItem(icon: Icon(Icons.search), title: Container()),
+    BottomNavigationBarItem(icon: Icon(Icons.live_tv), title: Container()),
     BottomNavigationBarItem(icon: Icon(Icons.person), title: Container()),
   ];
   @override

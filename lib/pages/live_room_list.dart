@@ -11,7 +11,8 @@ import '../route/navigator_util.dart';
 class LiveList extends StatefulWidget {
   //分类id
   final String cid;
-  const LiveList({Key key, this.cid}) : super(key: key);
+  final String com;
+  const LiveList({Key key, this.cid, this.com}) : super(key: key);
 
   @override
   _LiveListState createState() => _LiveListState();
@@ -36,8 +37,15 @@ class _LiveListState extends State<LiveList>
 
   /// 下拉刷新
   void _onRefresh() async {
+    var list = [];
     try {
-      var list = await API.getRecommend(widget.cid, 1);
+      //首页推荐
+      if (widget.com == "all") {
+        list = await API.getRecommendAll(widget.cid, 1);
+      } else {
+        //具体某个平台推荐
+        list = await API.getRecommendByCom(widget.com, 1);
+      }
       setState(() {
         _liveRooms = list;
       });
@@ -52,7 +60,14 @@ class _LiveListState extends State<LiveList>
 
   ///上拉加载
   void _onLoading() async {
-    var list = await API.getRecommend(widget.cid, _pageNum + 1);
+    List<LiveRoom> list = [];
+    //首页推荐
+    if (widget.com == "all" && widget.cid == "0") {
+      list = await API.getRecommendAll(widget.cid, _pageNum + 1);
+    } else {
+      //具体某个平台推荐
+      list = await API.getRecommendByCom(widget.com, _pageNum + 1);
+    }
     setState(() {
       _pageNum++;
       _liveRooms.addAll(list);

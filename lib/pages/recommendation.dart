@@ -82,7 +82,10 @@ class RecommendationState extends State<Recommendation>
   List<Widget> buildTabViewItem() {
     List<Widget> widgets = [];
     _categoryList.forEach((category) {
-      widgets.add(LiveList(cid: category.cid));
+      widgets.add(LiveList(
+        cid: category.cid,
+        com: 'all',
+      ));
     });
     return widgets;
   }

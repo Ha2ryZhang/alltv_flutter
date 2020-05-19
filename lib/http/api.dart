@@ -4,9 +4,24 @@ import 'package:alltv/utils/toast.dart';
 import 'package:dio/dio.dart';
 
 class API {
-  static Future<List<LiveRoom>> getRecommend(String cid, int pageNum) async {
+  /// 首页推荐
+  static Future<List<LiveRoom>> getRecommendAll(String cid, int pageNum) async {
     var json = await HttpManager.getInstance()
         .get('/top/live/' + cid, params: {"pageNum": pageNum});
+    List list = json["data"];
+    List<LiveRoom> liveList = [];
+    list.forEach((live) {
+      LiveRoom liveRoom = LiveRoom.fromJson(live);
+      liveList.add(liveRoom);
+    });
+    return liveList;
+  }
+
+  /// 平台推荐
+  static Future<List<LiveRoom>> getRecommendByCom(
+      String com, int pageNum) async {
+    var json = await HttpManager.getInstance().get('/' + com + '/top_rooms',
+        params: {"pageNum": pageNum, "pageSize": 15});
     List list = json["data"];
     List<LiveRoom> liveList = [];
     list.forEach((live) {

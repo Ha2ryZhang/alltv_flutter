@@ -18,6 +18,7 @@ class _MyPageState extends State<MyPage> {
   void initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     currentTheme = Provider.of<ThemeInfo>(context).themeColor;
@@ -42,6 +43,7 @@ class _MyPageState extends State<MyPage> {
           title: Text(
             "消息中心",
           ),
+          trailing: Text("待开发", style: TextStyle(color: Colors.grey)),
           onTap: () {},
         ),
         ListTile(
@@ -71,38 +73,41 @@ class _MyPageState extends State<MyPage> {
           title: Text(
             "主题切换",
           ),
-          onTap: (){NavigatorUtil.jump(context, Routes.themeSetting);},
-          trailing: Icon(Icons.brightness_1,color: ThemeColors.themeColor[currentTheme]["primaryColor"]),
+          onTap: () {
+            NavigatorUtil.jump(context, Routes.themeSetting);
+          },
+          trailing: Icon(Icons.brightness_1,
+              color: ThemeColors.themeColor[currentTheme]["primaryColor"]),
         ),
-        ListTile(
-            leading: Icon(
-              Icons.brightness_medium,
-            ),
-            title: Text(
-              "夜间模式",
-            ),
-            trailing: Switch(
-                value: isDark,
-                onChanged: (value) {
-                  setState(() {
-                    isDark = value;
-                  });
-                }),
-            onTap: () {
-              setState(() {
-                isDark = !isDark;
-              });
-              // Provider.of<ThemeInfo>(context,listen: false).setTheme("black");
-            }),
-        ListTile(
-          leading: Icon(
-            Icons.assignment_late,
-          ),
-          title: Text(
-            "意见反馈",
-          ),
-          onTap: () {},
-        ),
+        // ListTile(
+        //     leading: Icon(
+        //       Icons.brightness_medium,
+        //     ),
+        //     title: Text(
+        //       "夜间模式",
+        //     ),
+        //     trailing: Switch(
+        //         value: isDark,
+        //         onChanged: (value) {
+        //           setState(() {
+        //             isDark = value;
+        //           });
+        //         }),
+        //     onTap: () {
+        //       setState(() {
+        //         isDark = !isDark;
+        //       });
+        //       // Provider.of<ThemeInfo>(context,listen: false).setTheme("black");
+        //     }),
+        // ListTile(
+        //   leading: Icon(
+        //     Icons.assignment_late,
+        //   ),
+        //   title: Text(
+        //     "意见反馈",
+        //   ),
+        //   onTap: () {},
+        // ),
         ListTile(
           leading: Icon(
             Icons.settings,
@@ -110,13 +115,23 @@ class _MyPageState extends State<MyPage> {
           title: Text(
             "设置",
           ),
+          trailing: Text("待开发", style: TextStyle(color: Colors.grey)),
+          onTap: () {},
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.code,
+          ),
+          title: Text(
+            "关于作者",
+          ),
           onTap: () {},
         )
       ],
     );
   }
 
-  void changeTheme(){
+  void changeTheme() {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -126,13 +141,17 @@ class _MyPageState extends State<MyPage> {
               style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
             children: <Widget>[
-              ListTile(title: Text("data1"),),
-              ListTile(title: Text("data2"),)
+              ListTile(
+                title: Text("data1"),
+              ),
+              ListTile(
+                title: Text("data2"),
+              )
             ],
           );
         });
   }
-  
+
   Widget buildUser() {
     return Container(
         margin: EdgeInsets.only(top: 10.0, bottom: 10.0),

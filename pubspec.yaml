@@ -2,7 +2,7 @@ name: alltv
 description: A new Flutter project.
 
 
-version: 1.0.1+1
+version: 1.0.6+1
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -28,8 +28,6 @@ dependencies:
   #websocket
   web_socket_channel: ^1.1.0
   # 视频播放
-  # chewie: ^0.9.10
-  # video_player: ^0.10.10 
   fijkplayer: ^0.8.3
   crypto: ^2.1.3
   # The following adds the Cupertino Icons font to your application.
@@ -55,6 +53,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
    - assets/images/cache.png
+   - assets/images/douyu.jpg
+   - assets/images/huya.jpg
+   - assets/images/bilibili.jpg
    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
