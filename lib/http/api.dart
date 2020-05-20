@@ -1,4 +1,5 @@
 import 'package:alltv/http/dio_util.dart';
+import 'package:alltv/model/bilibili_host_server.dart';
 import 'package:alltv/model/live_room.dart';
 import 'package:alltv/utils/toast.dart';
 import 'package:dio/dio.dart';
@@ -43,6 +44,28 @@ class API {
     }
   }
 
+  static Future<BiliBiliHostServerConfig> getBServerHost(String roomId) async {
+    String url =
+        "https://api.live.bilibili.com/room/v1/Danmu/getConf?id=$roomId";
+    Dio dio = Dio();
+    try {
+      Response res = await dio.get(url,
+          options: Options(
+            receiveTimeout: 5000,
+            sendTimeout: 5000,
+          ));
+
+      if (res.data["data"] != null) {
+        return BiliBiliHostServerConfig.fromJson(res.data["data"]);
+      }
+      return null;
+    } catch (e) {
+      print(e.toString());
+      showToast("bilibili未知错误");
+      return null;
+    }
+  }
+
   ///由于bilibili 风控对linux ，获取不到直播链，改为手动获取
   static Future<String> getBiLiveUrl(String roomId) async {
     String url =
@@ -68,7 +91,6 @@ class API {
       return null;
     } catch (e) {
       print(e.toString());
-      showToast("bilibili未知错误");
       return null;
     }
   }

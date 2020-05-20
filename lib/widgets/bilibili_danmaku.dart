@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:alltv/http/api.dart';
+import 'package:alltv/model/bilibili_host_server.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/io.dart';
 
@@ -20,7 +22,7 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
   int totleTime = 0;
   List _messageList = [];
   ScrollController _scrollController = ScrollController();
-
+  BiliBiliHostServerConfig config;
   _scrollToBottom() {
     _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
   }
@@ -49,30 +51,38 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
   bool get wantKeepAlive => true;
 
   //初始化
-  void initLive() {
-    _channel = IOWebSocketChannel.connect(
-        "wss://broadcastlv.chat.bilibili.com:2245/sub");
+  Future<void> initLive() async {
+    config = await API.getBServerHost(widget.roomId.toString());
+    _channel = IOWebSocketChannel.connect("wss://" +
+        config.hostServerList[0].host +
+        ":" +
+        config.hostServerList[0].wssPort.toString() +
+        "/sub");
     joinRoom(widget.roomId);
     setListener();
   }
 
   void sendXinTiaoBao() {
-    List<int> code = [0, 0, 0, 16, 0, 16, 0, 1, 0, 0, 0, 2, 0, 0, 0, 1];
-    _channel.sink.add(Uint8List.fromList(code).buffer);
+    List<int> code = [0, 0, 0, 0, 0, 16, 0, 1, 0, 0, 0, 2, 0, 0, 0, 1];
+    _channel.sink.add(Uint8List.fromList(code));
   }
 
   //加入房间
   void joinRoom(int id) {
-    var uId = 1e14 + 2e14 * Random().nextDouble();
+    // var uId = 1e14 + 2e14 * Random().nextDouble();
     String msg = "{" +
-        "\"roomid\":$id" +
-        "\"uId\":$uId" +
-        "\"protover\":2" +
-        "\"platform\":\"web\"" +
-        "\"clientver\":\"1.10.6\"" +
-        "\"type\":2" +
-        "}";
+        "\"roomid\":$id," +
+        "\"uId\":0," +
+        "\"protover\":2," +
+        "\"platform\":\"web\"," +
+        "\"clientver\":\"1.10.6\"," +
+        "\"type\":2," +
+        "\"key\":\"" +
+        config.token +
+        "\"}";
+    print(msg);
     _channel.sink.add(encode(7, msg: msg));
+    sendXinTiaoBao();
   }
 
   //设置监听
@@ -101,11 +111,11 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
     int packLen = readInt(list, 0, 4);
     int headerLen = readInt(list, 4, 2);
     int op = readInt(list, 8, 4);
-    // print("接收到：");
-    // print("listLen ${list.length}");
-    // print("packLen $packLen");
-    // print("headerLen $headerLen");
-    // print("op $op");
+    print("接收到：");
+    print("listLen ${list.length}");
+    print("packLen $packLen");
+    print("headerLen $headerLen");
+    print("op $op");
     switch (op) {
       case 8:
         print("进入房间");
@@ -113,12 +123,12 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
       case 5:
         int offset = 0;
         while (offset < list.length) {
-          packLen = readInt(list, offset + 0, 4);
+          packLen = readInt(list, offset, 4);
           headerLen = 16;
           Uint8List body = list.sublist(offset + headerLen, offset + packLen);
           String data = utf8.decode(body);
           offset += packLen;
-          //print(data);
+          print(data);
           Map<String, dynamic> jd = json.decode(data);
           switch (jd["cmd"]) {
             case "DANMU_MSG":

@@ -43,6 +43,7 @@ class _LivePageState extends State<LivePage> {
     roomName = FluroConvertUtils.fluroCnParamsDecode(widget.room.roomName);
     ownerName = FluroConvertUtils.fluroCnParamsDecode(widget.room.ownerName);
     cateName = FluroConvertUtils.fluroCnParamsDecode(widget.room.cateName);
+
     player.setOption(FijkOption.hostCategory, "enable-snapshot", 1);
     player.setOption(FijkOption.playerCategory, "mediacodec-all-videos", 1);
     initRoom();
@@ -53,12 +54,13 @@ class _LivePageState extends State<LivePage> {
       setState(() {
         url = value;
       });
-      startPlay();
+      // startPlay();
     });
   }
 
   void startPlay() async {
-    // await player.setOption(FijkOption.formatCategory, "headers", "User-Agent:Mozilla/5.0 (Linux; Android 9; ONEPLUS A5010 Build/PKQ1.180716.001; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/80.0.3987.149 Mobile Safari/537.36\r\nConnection: keep-alive");
+    // await player.setOption(FijkOption.formatCategory, "headers",
+    //     "User-Agent : Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.11 TaoBrowser/2.0 Safari/536.11\r\nexe:123");
     await player.setOption(FijkOption.hostCategory, "request-screen-on", 1);
     await player.setOption(FijkOption.hostCategory, "request-audio-focus", 1);
     await player
@@ -79,7 +81,7 @@ class _LivePageState extends State<LivePage> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          buildPlayer(),
+          // buildPlayer(),
           buildRoomInfo(),
           Expanded(child: buildDanmakuList(widget.room.com)),
         ],
@@ -126,14 +128,15 @@ class _LivePageState extends State<LivePage> {
 
   void favoriteOrCancel() {
     setState(() {
-      isFavorite=!isFavorite;
+      isFavorite = !isFavorite;
     });
+
     ///TODO 添加到本地储存 后期云同步
     if (isFavorite) {
       showToast("关注成功");
     }
   }
-  
+
   Widget buildPlayer() {
     var width = MediaQuery.of(context).size.width;
     return Container(
