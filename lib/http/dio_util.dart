@@ -2,7 +2,7 @@ import 'package:alltv/utils/toast.dart';
 import 'package:dio/dio.dart';
 
 class HttpManager {
-  final String baseurl = 'http://192.168.0.112:8888/api';
+  final String baseurl = 'http://192.168.20.112:8888/api';
   final int connectTimeout = 10000;
   final int receiveTimeout = 3000;
 

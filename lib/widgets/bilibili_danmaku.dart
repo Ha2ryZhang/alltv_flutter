@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
@@ -29,8 +30,8 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
 
   @override
   void initState() {
-    timer = Timer.periodic(Duration(seconds: 70), (callback) {
-      totleTime += 70;
+    timer = Timer.periodic(Duration(seconds: 60), (callback) {
+      totleTime += 60;
       //sendXinTiaoBao();
       print("时间: $totleTime s");
       _channel.sink?.close();
@@ -108,14 +109,16 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
 
   //对消息进行解码
   decode(Uint8List list) {
-    int packLen = readInt(list, 0, 4);
+    // int packLen = readInt(list, 0, 4);
     int headerLen = readInt(list, 4, 2);
+    int ver = readInt(list, 6, 2);
     int op = readInt(list, 8, 4);
-    print("接收到：");
-    print("listLen ${list.length}");
-    print("packLen $packLen");
-    print("headerLen $headerLen");
-    print("op $op");
+    // print("接收到：");
+    // print("listLen ${list.length}");
+    // print("packLen $packLen");
+    // print("headerLen $headerLen");
+    // print("ver $ver");
+    // print("op $op");
     switch (op) {
       case 8:
         print("进入房间");
@@ -123,12 +126,19 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
       case 5:
         int offset = 0;
         while (offset < list.length) {
-          packLen = readInt(list, offset, 4);
-          headerLen = 16;
-          Uint8List body = list.sublist(offset + headerLen, offset + packLen);
+          int packLen = readInt(list, offset + 0, 4);
+          int headerLen = readInt(list, offset + 4, 2);
+          Uint8List body;
+          if (ver == 2) {
+            body = list.sublist(offset + headerLen, offset + packLen);
+            decode(ZLibDecoder().convert(body));
+            offset += packLen;
+            continue;
+          } else {
+            body = list.sublist(offset + headerLen, offset + packLen);
+          }
           String data = utf8.decode(body);
           offset += packLen;
-          print(data);
           Map<String, dynamic> jd = json.decode(data);
           switch (jd["cmd"]) {
             case "DANMU_MSG":

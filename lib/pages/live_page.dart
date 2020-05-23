@@ -4,6 +4,7 @@ import 'package:alltv/utils/fluro_convert_util.dart';
 import 'package:alltv/utils/toast.dart';
 import 'package:alltv/widgets/alltv_panel.dart';
 import 'package:alltv/widgets/bilibili_danmaku.dart';
+import 'package:alltv/widgets/douyu_danmaku.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
@@ -93,6 +94,8 @@ class _LivePageState extends State<LivePage> {
     switch (com) {
       case "bilibili":
         return LiveDanmakuPage(int.parse(widget.room.roomId));
+      case "douyu":
+        return DouYuLiveDanmakuPage(int.parse(widget.room.roomId));
       default:
         return Center(
           child: Text("目前仅支持B站弹幕,后续会整合其他平台的。"),
