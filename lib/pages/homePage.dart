@@ -1,8 +1,8 @@
 import 'package:alltv/pages/chanel.dart';
 import 'package:alltv/pages/my.dart';
+import 'package:alltv/pages/my_favorite.dart';
 import 'package:alltv/pages/recommendation.dart';
 import 'package:flutter/material.dart';
-import 'package:alltv/pages/second.dart';
 
 class AllTVHome extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class AllTVHomeState extends State<AllTVHome>
 
   List<Widget> _pageList = [
     Recommendation(),
-    SecondTab(),
+    MyFavorite(),
     ChanelPage(),
     MyPage()
   ];

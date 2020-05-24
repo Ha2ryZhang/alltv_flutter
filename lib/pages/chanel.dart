@@ -77,6 +77,22 @@ class _ChanelPageState extends State<ChanelPage> {
         indent: 0.0,
         color: Colors.grey[400],
       ),
+      ListTile(
+        leading: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.asset("assets/images/egame.jpeg",
+                fit: BoxFit.fill, width: 55, height: 55)),
+        title: Text("企鹅电竞"),
+        trailing: Icon(Icons.navigate_next),
+        onTap: () {
+          NavigatorUtil.goChanelDetail(context, "egame");
+        },
+      ),
+       Divider(
+        height: 1.0,
+        indent: 0.0,
+        color: Colors.grey[400],
+      ),
       Container(
         margin: const EdgeInsets.only(top: 200),
         child: Center(

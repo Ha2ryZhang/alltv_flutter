@@ -6,3 +6,6 @@ const String RECOMMENDATION_CATEGORY_LIST = 'recommendation_category_list';
 
 /// 主题信息
 const String THEME_INFO = "theme_info";
+
+/// 关注的主播（房间）
+const String FAVORITE_ROOM = "favorite_room";

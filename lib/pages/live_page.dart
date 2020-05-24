@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:alltv/model/live_room.dart';
 import 'package:alltv/utils/common_convert.dart';
 import 'package:alltv/utils/fluro_convert_util.dart';
 import 'package:alltv/utils/toast.dart';
+import 'package:alltv/utils/utils.dart';
+import 'package:alltv/values/storages.dart';
 import 'package:alltv/widgets/alltv_panel.dart';
 import 'package:alltv/widgets/bilibili_danmaku.dart';
-import 'package:alltv/widgets/douyu_danmaku.dart';
+// import 'package:alltv/widgets/douyu_danmaku.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fijkplayer/fijkplayer.dart';
 import 'package:flutter/material.dart';
@@ -38,15 +42,28 @@ class _LivePageState extends State<LivePage> {
     super.initState();
     //对路由中文参数进行decode
     roomThumb = FluroConvertUtils.fluroCnParamsDecode(widget.room.roomThumb);
+    widget.room.roomThumb = roomThumb;
     avatar = FluroConvertUtils.fluroCnParamsDecode(widget.room.avatar);
+    widget.room.avatar = avatar;
     roomName = FluroConvertUtils.fluroCnParamsDecode(widget.room.roomName);
+    widget.room.roomName = roomName;
     ownerName = FluroConvertUtils.fluroCnParamsDecode(widget.room.ownerName);
-    roomName = FluroConvertUtils.fluroCnParamsDecode(widget.room.roomName);
-    ownerName = FluroConvertUtils.fluroCnParamsDecode(widget.room.ownerName);
+    widget.room.ownerName = ownerName;
     cateName = FluroConvertUtils.fluroCnParamsDecode(widget.room.cateName);
+    widget.room.cateName = cateName;
 
     player.setOption(FijkOption.hostCategory, "enable-snapshot", 1);
     player.setOption(FijkOption.playerCategory, "mediacodec-all-videos", 1);
+    //判断是否关注房间
+    Map<String, dynamic> favorite =
+        json.decode(StorageUtil().getJSON(FAVORITE_ROOM));
+    favorite.forEach((key, value) {
+      if(key==widget.room.roomId){
+        setState(() {
+          isFavorite=true;
+        });
+      }
+    });
     initRoom();
   }
 
@@ -55,7 +72,7 @@ class _LivePageState extends State<LivePage> {
       setState(() {
         url = value;
       });
-      // startPlay();
+      startPlay();
     });
   }
 
@@ -82,7 +99,7 @@ class _LivePageState extends State<LivePage> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          // buildPlayer(),
+          buildPlayer(),
           buildRoomInfo(),
           Expanded(child: buildDanmakuList(widget.room.com)),
         ],
@@ -94,8 +111,8 @@ class _LivePageState extends State<LivePage> {
     switch (com) {
       case "bilibili":
         return LiveDanmakuPage(int.parse(widget.room.roomId));
-      case "douyu":
-        return DouYuLiveDanmakuPage(int.parse(widget.room.roomId));
+      // case "douyu":
+      //   return DouYuLiveDanmakuPage(int.parse(widget.room.roomId));
       default:
         return Center(
           child: Text("目前仅支持B站弹幕,后续会整合其他平台的。"),
@@ -133,11 +150,16 @@ class _LivePageState extends State<LivePage> {
     setState(() {
       isFavorite = !isFavorite;
     });
-
-    ///TODO 添加到本地储存 后期云同步
+    //读取关注列表
+    Map<String, dynamic> favorite = json.decode(StorageUtil().getJSON(FAVORITE_ROOM));
+    ///TODO 关注后期云同步
     if (isFavorite) {
+      favorite.addAll({widget.room.roomId: widget.room});
       showToast("关注成功");
+    }else{
+      favorite.remove(widget.room.roomId);
     }
+    StorageUtil().setJSON(FAVORITE_ROOM,json.encode(favorite));
   }
 
   Widget buildPlayer() {
@@ -147,13 +169,13 @@ class _LivePageState extends State<LivePage> {
         child: SafeArea(
           child: FijkView(
             width: width,
-            height: 240,
+            height: 235,
             player: player,
             cover: Image.network(
               roomThumb,
             ).image,
             color: Colors.black,
-            fit: FijkFit.fitWidth,
+            fit: FijkFit.fill,
             panelBuilder: allTVPanelBuilder(snapShot: true, doubleTap: false),
           ),
         ));

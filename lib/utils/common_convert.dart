@@ -6,6 +6,8 @@ String convertCom(String com) {
       return "B站";
     case 'huya':
       return "虎牙";
+    case 'egame':
+      return"企鹅电竞";
     default:
       return "未知";
   }

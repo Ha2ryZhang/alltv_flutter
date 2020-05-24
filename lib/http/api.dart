@@ -66,6 +66,12 @@ class API {
     }
   }
 
+  static Future<bool> checkLiveStatus(String com,String roomId) async {
+    var json = await HttpManager.getInstance()
+        .get('/'+com+'/checkLiveStatus', params: {"roomId": roomId});
+     return json["data"]==null?false:json["data"];
+  }
+
   ///由于bilibili 风控对linux ，获取不到直播链，改为手动获取
   static Future<String> getBiLiveUrl(String roomId) async {
     String url =

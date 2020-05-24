@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:alltv/model/category.dart';
+import 'package:alltv/model/live_room.dart';
 import 'package:alltv/provider/provider.dart';
 import 'package:alltv/route/Application.dart';
 import 'package:alltv/route/routes.dart';
@@ -37,6 +39,9 @@ class Global {
     isFirstOpen = !StorageUtil().getBool(STORAGE_DEVICE_ALREADY_OPEN_KEY);
     if (isFirstOpen) {
       StorageUtil().setBool(STORAGE_DEVICE_ALREADY_OPEN_KEY, true);
+      //初始化空关注第一次打开
+      Map<String,LiveRoom> list=new Map();
+      StorageUtil().setJSON(FAVORITE_ROOM, json.encode(list));
     }
     //读取主题信息
 
@@ -76,7 +81,7 @@ class Global {
       //保存localstorage
       StorageUtil().setJSON(RECOMMENDATION_CATEGORY_LIST, list);
     }
-
+    
     // android 状态栏为透明的沉浸
     if (Platform.isAndroid) {
       SystemUiOverlayStyle systemUiOverlayStyle =

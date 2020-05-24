@@ -5,6 +5,7 @@ import 'package:alltv/utils/toast.dart';
 import 'package:alltv/values/theme_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyPage extends StatefulWidget {
   @override
@@ -123,34 +124,50 @@ class _MyPageState extends State<MyPage> {
             Icons.code,
           ),
           title: Text(
-            "关于作者",
+            "关于项目",
           ),
-          onTap: () {},
+          trailing: Icon(Icons.navigate_next),
+          onTap: () {
+            showAboutDialog(
+              context: context,
+              applicationName: 'alltv',
+              applicationVersion: '1.1.0',
+              applicationIcon: Image.asset(
+                "assets/images/alltv.png",
+                width: 80,
+              ),
+              applicationLegalese: 'by HarryZhang',
+              children: <Widget>[
+                Text(
+                  '本项目是业余时间所写，随缘更新维护。',
+                  style: TextStyle(fontSize: 13.5),
+                ),
+                Text(
+                  '如果你觉得有帮助到你,那就麻烦点个Star吧！',
+                  style: TextStyle(fontSize: 13.5),
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.only(left: 5),
+                  leading: Image.asset("assets/images/Github.png",width: 25,),
+                  title: Text("Github"),
+                  trailing: Icon(Icons.navigate_next),
+                  onTap: () async {await launch("https://github.com/ha2ryzhang/alltv_flutter");},
+                ),
+                ListTile(
+                  contentPadding: EdgeInsets.only(left: 5),
+                  leading: Image.asset("assets/images/juejin.png",width: 25,),
+                  title: Text("HarryZhang的博客"),
+                  trailing: Icon(Icons.navigate_next),
+                  onTap: () async {await launch("https://juejin.im/user/5ddb0cd4f265da7de03eca73");},
+                ),
+              ],
+            );
+          },
         )
       ],
     );
   }
 
-  void changeTheme() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-            title: Text(
-              'This is SimpleDialog title',
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-            ),
-            children: <Widget>[
-              ListTile(
-                title: Text("data1"),
-              ),
-              ListTile(
-                title: Text("data2"),
-              )
-            ],
-          );
-        });
-  }
 
   Widget buildUser() {
     return Container(
@@ -161,8 +178,8 @@ class _MyPageState extends State<MyPage> {
           },
           leading: CircleAvatar(
             radius: 25,
-            backgroundImage: NetworkImage(
-                "https://dss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3744215463,383557679&fm=26&gp=0.jpg"),
+            backgroundColor: Colors.white,
+            backgroundImage: Image.asset("assets/images/alltv.png").image,
           ),
           title: Text("alltv"),
           subtitle: Text("目前功能暂时较少，请见谅。"),

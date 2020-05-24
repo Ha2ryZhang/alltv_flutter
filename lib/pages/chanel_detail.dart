@@ -28,6 +28,8 @@ class _ChanelDetailState extends State<ChanelDetail> {
         return "虎牙直播";
       case "bilibili":
         return "哔哩哔哩";
+      case "egame":
+        return "企鹅电竞";
       default:
         return "";
     }

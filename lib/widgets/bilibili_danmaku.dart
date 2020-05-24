@@ -55,9 +55,9 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
   Future<void> initLive() async {
     config = await API.getBServerHost(widget.roomId.toString());
     _channel = IOWebSocketChannel.connect("wss://" +
-        config.hostServerList[0].host +
+        config.hostServerList[2].host +
         ":" +
-        config.hostServerList[0].wssPort.toString() +
+        config.hostServerList[2].wssPort.toString() +
         "/sub");
     joinRoom(widget.roomId);
     setListener();

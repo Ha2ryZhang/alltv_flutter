@@ -70,30 +70,31 @@ class _LiveDanmakuPageState extends State<DouYuLiveDanmakuPage>
   void login() {
     print("login");
     String roomID = widget.roomId.toString();
-    String login = "type@=loginreq/roomid@=$roomID/\x00";
+    String login = "type@=loginreq/roomid@=$roomID/";
     sendMsg(login);
-    String joingroup = "type@=joingroup/rid@=$roomID/gid@=-9999/\x00";
+    String joingroup = "type@=joingroup/rid@=$roomID/gid@=-9999/";
     sendMsg(joingroup);
   }
 
   //对消息编码
   void sendMsg(String msg) {
-    List<int> msgData = utf8.encode(msg);
+   int contentLen=8+msg.length+1;
     List<int> header = [
       0,
       0,
       0,
-      msgData.length + 8,
+      contentLen,
       0,
       0,
       0,
-      msgData.length + 8,
+      contentLen,
       0,
       689
     ];
     List<int> tmp = new List();
     tmp.addAll(header);
-    tmp.addAll(msgData);
+    tmp.addAll(utf8.encode(msg));
+    tmp.add(0);
     _channel.sink.add(Uint8List.fromList(tmp));
   }
 
