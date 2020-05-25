@@ -11,6 +11,7 @@
 <center class="half">
     <img style="margin-right:10px" src="./images/3.jpeg" width="200"/><img style="margin-right:10px" src="./images/1.jpeg" width="200"/><img style="margin-right:10px" src="./images/2.jpeg" width="200"/>
 </center>
+
 ### 进度
 
 - [x] 修复 BILIBILI 弹幕 (目前不支持全屏)
@@ -24,3 +25,5 @@
 - [ ] 更加合理化的定制分类标签
 
 - [ ] 增加其他平台获取弹幕(websocket)(欢迎pr)
+
+### 如果对你有帮助麻烦点个Star 谢谢！
