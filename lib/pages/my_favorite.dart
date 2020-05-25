@@ -48,30 +48,29 @@ class _MyFavoriteState extends State<MyFavorite> {
 
   /// 下拉刷新
   void _onRefresh() async {
-    Map<String, dynamic> favorite =
-        json.decode(StorageUtil().getJSON(FAVORITE_ROOM));
-    setState(() {
-      online = [];
-      offOnline=[];
-    });
-    favorite.forEach((key, value) async {
-      bool isLive = await API.checkLiveStatus(value["com"], key);
-      if (isLive) {
-        setState(() {
-          online.add(LiveRoom.fromJson(value));
-        });
-      } else {
-        setState(() {
-          offOnline.add(LiveRoom.fromJson(value));
-        });
-      }
-    });
-    // try {
-
-    // } catch (e) {
-    //   print(e);
-    //   _refreshController.refreshFailed();
-    // }
+    try {
+      Map<String, dynamic> favorite =
+          json.decode(StorageUtil().getJSON(FAVORITE_ROOM));
+      setState(() {
+        online = [];
+        offOnline = [];
+      });
+      favorite.forEach((key, value) async {
+        bool isLive = await API.checkLiveStatus(value["com"], key);
+        if (isLive) {
+          setState(() {
+            online.add(LiveRoom.fromJson(value));
+          });
+        } else {
+          setState(() {
+            offOnline.add(LiveRoom.fromJson(value));
+          });
+        }
+      });
+    } catch (e) {
+      print(e);
+      _refreshController.refreshFailed();
+    }
     _refreshController.refreshCompleted();
   }
 
@@ -87,6 +86,11 @@ class _MyFavoriteState extends State<MyFavorite> {
   }
 
   List<Widget> getOnline() {
+    if (online.length == 0) {
+      List<Widget> list=[];
+      list.add(Text("你暂时还没有关注的主播哦。",style: TextStyle(color: Colors.grey),));
+      return list;
+    }
     return online.map((room) {
       return ListTile(
         leading: ClipRRect(
