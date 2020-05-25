@@ -8,10 +8,18 @@
 后台的话主要要也是自己用Java写的[alltv](https://github.com/ha2ryzhang/alltv),目前开源了大部分吧，只有一部分关于爬虫的暂时还没有开源，主要是太乱了，后面整理整理加进去。
 
 ### 预览图
-<center class="half">
-    <img style="margin-right:10px" src="./images/3.jpeg" width="200"/><img style="margin-right:10px" src="./images/1.jpeg" width="200"/><img style="margin-right:10px" src="./images/2.jpeg" width="200"/>
-</center>
 
+<div style="text-align: center"><table><tr>
+  <td style="text-align: center">
+<img src="./images/3.jpeg" width="200"/>
+</td>
+<td style="text-align: center">
+<img src="./images/1.jpeg" width="200"/>
+</td>
+  <td style="text-align: center">
+<img src="./images/2.jpeg" width="200"/>
+</td>
+</tr></table></div>
 ### 进度
 
 - [x] 修复 BILIBILI 弹幕 (目前不支持全屏)
