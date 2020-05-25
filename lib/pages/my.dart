@@ -148,17 +148,28 @@ class _MyPageState extends State<MyPage> {
                 ),
                 ListTile(
                   contentPadding: EdgeInsets.only(left: 5),
-                  leading: Image.asset("assets/images/Github.png",width: 25,),
+                  leading: Image.asset(
+                    "assets/images/Github.png",
+                    width: 25,
+                  ),
                   title: Text("Github"),
                   trailing: Icon(Icons.navigate_next),
-                  onTap: () async {await launch("https://github.com/ha2ryzhang/alltv_flutter");},
+                  onTap: () async {
+                    await launch("https://github.com/ha2ryzhang/alltv_flutter");
+                  },
                 ),
                 ListTile(
                   contentPadding: EdgeInsets.only(left: 5),
-                  leading: Image.asset("assets/images/juejin.png",width: 25,),
+                  leading: Image.asset(
+                    "assets/images/juejin.png",
+                    width: 25,
+                  ),
                   title: Text("HarryZhang的博客"),
                   trailing: Icon(Icons.navigate_next),
-                  onTap: () async {await launch("https://juejin.im/user/5ddb0cd4f265da7de03eca73");},
+                  onTap: () async {
+                    await launch(
+                        "https://juejin.im/user/5ddb0cd4f265da7de03eca73");
+                  },
                 ),
               ],
             );
@@ -167,7 +178,6 @@ class _MyPageState extends State<MyPage> {
       ],
     );
   }
-
 
   Widget buildUser() {
     return Container(
