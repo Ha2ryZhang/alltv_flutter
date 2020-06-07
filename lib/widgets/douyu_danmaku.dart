@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -19,15 +18,13 @@ class _LiveDanmakuPageState extends State<DouYuLiveDanmakuPage>
   IOWebSocketChannel _channel;
   int totleTime = 0;
   List _messageList = [];
+  ScrollController _scrollController = ScrollController();
+  _scrollToBottom() {
+    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+  }
+
   @override
   void initState() {
-    // timer = Timer.periodic(Duration(seconds: 70), (callback) {
-    //   totleTime += 70;
-    //   //sendXinTiaoBao();
-    //   print("时间: $totleTime s");
-    //   _channel.sink?.close();
-    //   initLive();
-    // });
     initLive();
     super.initState();
   }
@@ -44,95 +41,109 @@ class _LiveDanmakuPageState extends State<DouYuLiveDanmakuPage>
 
   //初始化
   void initLive() {
-    _channel = IOWebSocketChannel.connect("wss://danmuproxy.douyu.com:8501");
+    _channel = IOWebSocketChannel.connect("wss://danmuproxy.douyu.com:8506");
     login();
     setListener();
+    timer = Timer.periodic(Duration(seconds: 45), (callback) {
+      totleTime += 45;
+      heartBeat();
+      print("时间: $totleTime s");
+    });
   }
 
-  void sendXinTiaoBao() {
-    List<int> code = [0, 0, 0, 16, 0, 16, 0, 1, 0, 0, 0, 2, 0, 0, 0, 1];
-    _channel.sink.add(Uint8List.fromList(code).buffer);
-  }
-
-  //加入房间
-  void joinRoom(int id) {
-    // _channel.sink.add();
+  //发送心跳包
+  void heartBeat() {
+    String heartbeat = 'type@=mrkl/';
+    _channel.sink.add(encode(heartbeat));
   }
 
   //设置监听
   void setListener() {
     _channel.stream.listen((msg) {
-      // Uint8List list = Uint8List.fromList(msg);
-      print(msg);
+      Uint8List list = Uint8List.fromList(msg);
+      decode(list);
     });
   }
 
   void login() {
     print("login");
     String roomID = widget.roomId.toString();
-    String login = "type@=loginreq/roomid@=$roomID/";
-    sendMsg(login);
+    String login =
+        "type@=loginreq/room_id@=$roomID/dfl@=sn@A=105@Sss@A=1/username@=61609154/uid@=61609154/ver@=20190610/aver@=218101901/ct@=0/";
+    print(login);
+    _channel.sink.add(encode(login));
     String joingroup = "type@=joingroup/rid@=$roomID/gid@=-9999/";
-    sendMsg(joingroup);
-  }
-
-  //对消息编码
-  void sendMsg(String msg) {
-   int contentLen=8+msg.length+1;
-    List<int> header = [
-      0,
-      0,
-      0,
-      contentLen,
-      0,
-      0,
-      0,
-      contentLen,
-      0,
-      689
-    ];
-    List<int> tmp = new List();
-    tmp.addAll(header);
-    tmp.addAll(utf8.encode(msg));
-    tmp.add(0);
-    _channel.sink.add(Uint8List.fromList(tmp));
+    print(joingroup);
+    _channel.sink.add(encode(joingroup));
+    String heartbeat = 'type@=mrkl/';
+    print(heartbeat);
+    _channel.sink.add(encode(heartbeat));
   }
 
   //对消息进行解码
-  decode(Uint8List list) {}
+  decode(Uint8List list) {
+    //消息总长度
+    int totalLength = list.length;
+    // 当前消息长度
+    int len = 0;
+    int decodedMsgLen = 0;
+    // 单条消息的 buffer
+    Uint8List singleMsgBuffer;
+    Uint8List lenStr;
+    while (decodedMsgLen < totalLength) {
+      lenStr = list.sublist(decodedMsgLen, decodedMsgLen + 4);
+      len = lenStr.buffer.asByteData().getInt32(0, Endian.little) + 4;
+      singleMsgBuffer = list.sublist(decodedMsgLen, decodedMsgLen + len);
+      decodedMsgLen += len;
+      String byteDatas =
+          utf8.decode(singleMsgBuffer.sublist(12, singleMsgBuffer.length - 2));
+      //type@=chatmsg/rid@=99999/ct@=2/uid@=151938256/nn@=99999丶让我中个奖吧/txt@=这应该也就18左右吧/cid@=0a99327c7fbb495bbfd1f10000000000/ic@=avanew@Sface@S201707@S21@S18@Sc8e935d61918b28151e86548b1fad59f/level@=9/sahf@=0/cst@=1591546069188/bnn@=大马猴/bl@=7/brid@=99999/hc@=7094bdb067efbb89706bf894ceb8e67c/el@=/lk@=/fl@=7/urlev@=16/dms@=3/pdg@=65/pdk@=18
 
-  //写入编码
-  Uint8List writeInt(Uint8List src, int start, int len, int value) {
-    int i = 0;
-    while (i < len) {
-      src[start + i] = value ~/ pow(256, len - i - 1);
-      i++;
+      //目前只处理弹幕信息所以简单点
+
+      if (byteDatas.contains("type@=chatmsg")) {
+        //截取用户名
+        var nickname = byteDatas
+            .substring(byteDatas.indexOf("nn@="), byteDatas.indexOf("/txt"))
+            .replaceAll("nn@=", "");
+        //截取弹幕信息
+        var content = byteDatas
+            .substring(byteDatas.indexOf("txt@="), byteDatas.indexOf("/cid"))
+            .replaceAll("txt@=", "");
+        addDanmaku(LiveDanmakuItem(nickname, content));
+      }
     }
-    return src;
   }
 
-  //从编码读出数字
-  int readInt(Uint8List src, int start, int len) {
-    int res = 0;
-    for (int i = len - 1; i >= 0; i--) {
-      res += pow(256, len - i - 1) * src[start + i];
-    }
-    return res;
+  Uint8List encode(String msg) {
+    ByteData header = ByteData(12);
+    //定义协议头
+    header.setInt32(0, msg.length + 9, Endian.little);
+    header.setInt32(4, msg.length + 9, Endian.little);
+    header.setInt32(8, 689, Endian.little);
+    List<int> data = header.buffer.asUint8List().toList();
+    List<int> msgData = utf8.encode(msg);
+    data.addAll(msgData);
+    //结尾 \0 协议规定
+    data.add(0);
+    return Uint8List.fromList(data);
   }
 
   void addDanmaku(LiveDanmakuItem item) {
     setState(() {
-      _messageList.insert(0, item);
+      _messageList.add(item);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
     return ListView.builder(
+        controller: _scrollController,
         itemCount: _messageList.length,
         padding: const EdgeInsets.only(left: 5, top: 2, right: 5),
-        reverse: true,
+        // reverse: true,
         shrinkWrap: true,
         itemBuilder: (context, i) {
           Widget item;

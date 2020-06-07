@@ -103,7 +103,6 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
     }
     Uint8List uint8list = Uint8List.fromList(header);
     uint8list = writeInt(uint8list, 0, 4, header.length);
-    print(uint8list.toString());
     return uint8list;
   }
 

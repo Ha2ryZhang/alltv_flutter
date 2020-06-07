@@ -88,7 +88,7 @@ class _MyFavoriteState extends State<MyFavorite> {
   List<Widget> getOnline() {
     if (online.length == 0) {
       List<Widget> list=[];
-      list.add(Text("你暂时还没有关注的主播哦。",style: TextStyle(color: Colors.grey),));
+      list.add(Text("暂时还没有关注的主播开播哦。",style: TextStyle(color: Colors.grey),));
       return list;
     }
     return online.map((room) {
