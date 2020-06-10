@@ -317,7 +317,8 @@ class __FijkPanel2State extends State<_FijkPanel2> {
   }
 
   Widget buildTimeText(BuildContext context, double height) {
-    String text = "劳资不支持这个功能";
+    String text =
+        "${_duration2String(_currentPos)}" + "/${_duration2String(_duration)}";
     return Text(text, style: TextStyle(fontSize: 12, color: Color(0xFFFFFFFF)));
   }
 
@@ -471,6 +472,7 @@ class __FijkPanel2State extends State<_FijkPanel2> {
       );
     }
   }
+
   Widget buildQnButton(BuildContext context, double height) {
     bool fullScreen = player.value.fullScreen;
     return IconButton(
@@ -481,6 +483,7 @@ class __FijkPanel2State extends State<_FijkPanel2> {
       onPressed: onRefresh,
     );
   }
+
   Widget buildTop(BuildContext context, double height) {
     // if (_isLocked) {
     //   // if locked, fixed screen and hidden all other controls
@@ -697,6 +700,22 @@ class __FijkPanel2State extends State<_FijkPanel2> {
     } else {
       return Container();
     }
+  }
+
+  String _duration2String(Duration duration) {
+    if (duration.inMilliseconds < 0) return "-: negtive";
+
+    String twoDigits(int n) {
+      if (n >= 10) return "$n";
+      return "0$n";
+    }
+
+    String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+    String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+    int inHours = duration.inHours;
+    return inHours > 0
+        ? "$inHours:$twoDigitMinutes:$twoDigitSeconds"
+        : "$twoDigitMinutes:$twoDigitSeconds";
   }
 
   @override
