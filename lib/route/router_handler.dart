@@ -2,6 +2,7 @@ import 'package:alltv/model/live_room.dart';
 import 'package:alltv/pages/chanel_detail.dart';
 import 'package:alltv/pages/homePage.dart';
 import 'package:alltv/pages/live_page.dart';
+import 'package:alltv/pages/search.dart';
 import 'package:alltv/pages/splash_page.dart';
 import 'package:alltv/pages/theme_setting.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,10 @@ Handler themeSettingHanderl = Handler(
 Handler chanelDetailHanderl = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
   return ChanelDetail(com: params['com'].first);
+});
+Handler searchHanderl = Handler(
+    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  return SearchPage();
 });
 // // 登陆页面
 // Handler loginHanderl = Handler(

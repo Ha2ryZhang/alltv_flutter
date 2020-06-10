@@ -1,4 +1,5 @@
 import 'package:alltv/route/navigator_util.dart';
+import 'package:alltv/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 
 class ChanelPage extends StatefulWidget {
@@ -13,6 +14,16 @@ class _ChanelPageState extends State<ChanelPage> {
         appBar: AppBar(
           title: Text("所有平台", style: TextStyle(fontSize: 16.0)),
           centerTitle: true,
+          actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            tooltip: "搜索",
+            onPressed: () {
+              showSearch(context: context, delegate: CustomSearchDelegate());
+              // NavigatorUtil.jump(context, Routes.search);
+            },
+          )
+        ],
         ),
         body: buildChanelList());
   }

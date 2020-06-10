@@ -20,7 +20,10 @@
 <img src="./images/2.jpeg" width="200"/>
 </td>
 </tr></table></div>
+
 ### 进度
+
+- 2020.06.10 添加搜索和斗鱼弹幕
 
 - [x] 修复 BILIBILI 弹幕 (目前不支持全屏)
 

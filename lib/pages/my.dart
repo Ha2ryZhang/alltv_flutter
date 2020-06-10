@@ -131,7 +131,7 @@ class _MyPageState extends State<MyPage> {
             showAboutDialog(
               context: context,
               applicationName: 'alltv',
-              applicationVersion: '1.1.0',
+              applicationVersion: '1.2.0',
               applicationIcon: Image.asset(
                 "assets/images/alltv.png",
                 width: 80,

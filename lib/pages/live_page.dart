@@ -56,15 +56,17 @@ class _LivePageState extends State<LivePage> {
     player.setOption(FijkOption.hostCategory, "enable-snapshot", 1);
     player.setOption(FijkOption.playerCategory, "mediacodec-all-videos", 1);
     //判断是否关注房间
-    Map<String, dynamic> favorite =
-        json.decode(StorageUtil().getJSON(FAVORITE_ROOM));
-    favorite.forEach((key, value) {
-      if(key==widget.room.roomId){
-        setState(() {
-          isFavorite=true;
-        });
-      }
-    });
+    var favoriteJson = StorageUtil().getJSON(FAVORITE_ROOM);
+    if (favoriteJson != null) {
+      Map<String, dynamic> favorite = json.decode(favoriteJson);
+      favorite.forEach((key, value) {
+        if (key == widget.room.roomId) {
+          setState(() {
+            isFavorite = true;
+          });
+        }
+      });
+    }
     initRoom();
   }
 
@@ -152,15 +154,23 @@ class _LivePageState extends State<LivePage> {
       isFavorite = !isFavorite;
     });
     //读取关注列表
-    Map<String, dynamic> favorite = json.decode(StorageUtil().getJSON(FAVORITE_ROOM));
+    var favoriteJson = StorageUtil().getJSON(FAVORITE_ROOM);
+    Map<String, dynamic> favorite;
+
     ///TODO 关注后期云同步
     if (isFavorite) {
+      if (favoriteJson != null) {
+        favorite = json.decode(favoriteJson);
+      } else {
+        favorite = Map<String, dynamic>();
+      }
       favorite.addAll({widget.room.roomId: widget.room});
       showToast("关注成功");
-    }else{
+    } else {
+      favorite = json.decode(favoriteJson);
       favorite.remove(widget.room.roomId);
     }
-    StorageUtil().setJSON(FAVORITE_ROOM,json.encode(favorite));
+    StorageUtil().setJSON(FAVORITE_ROOM, json.encode(favorite));
   }
 
   Widget buildPlayer() {

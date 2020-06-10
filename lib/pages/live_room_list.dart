@@ -191,8 +191,14 @@ class _LiveListState extends State<LiveList>
                       borderRadius: BorderRadius.circular(8),
                       child: Image.network(room.avatar,
                           fit: BoxFit.fill, width: 50, height: 50)),
-                  title: Text(convertCom(room.com) + '·' + room.ownerName),
-                  subtitle: Text(room.roomName),
+                  title: Text(
+                    convertCom(room.com) + '·' + room.ownerName,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text(
+                    room.roomName,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ],
             )));

@@ -5,6 +5,7 @@ import 'package:alltv/model/live_room.dart';
 import 'package:alltv/route/navigator_util.dart';
 import 'package:alltv/utils/utils.dart';
 import 'package:alltv/values/storages.dart';
+import 'package:alltv/widgets/search_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -25,6 +26,16 @@ class _MyFavoriteState extends State<MyFavorite> {
       appBar: new AppBar(
         title: Text("我的关注", style: TextStyle(fontSize: 16.0)),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.search),
+            tooltip: "搜索",
+            onPressed: () {
+              showSearch(context: context, delegate: CustomSearchDelegate());
+              // NavigatorUtil.jump(context, Routes.search);
+            },
+          )
+        ],
       ),
       body: SmartRefresher(
         controller: _refreshController,
@@ -87,8 +98,11 @@ class _MyFavoriteState extends State<MyFavorite> {
 
   List<Widget> getOnline() {
     if (online.length == 0) {
-      List<Widget> list=[];
-      list.add(Text("暂时还没有关注的主播开播哦。",style: TextStyle(color: Colors.grey),));
+      List<Widget> list = [];
+      list.add(Text(
+        "暂时还没有关注的主播开播哦。",
+        style: TextStyle(color: Colors.grey),
+      ));
       return list;
     }
     return online.map((room) {

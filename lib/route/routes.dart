@@ -7,6 +7,7 @@ class Routes {
   static String livePage = "/livePage";
   static String themeSetting = "/themeSetting";
   static String chanelDetail = '/chanelDetail';
+  static String search ='/search';
 
   static void configureRoutes(Router router) {
     // router.notFoundHandler = new Handler(
@@ -21,5 +22,6 @@ class Routes {
     router.define(livePage, handler: livePageHanderl);
     router.define(themeSetting, handler: themeSettingHanderl);
     router.define(chanelDetail, handler: chanelDetailHanderl);
+    router.define(search, handler: searchHanderl);
   }
 }

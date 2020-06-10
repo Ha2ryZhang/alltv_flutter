@@ -355,7 +355,6 @@ class __FijkPanel2State extends State<_FijkPanel2> {
     );
   }
 
-  /// TODO 增加顶部样式
   //  顶部的导航返回按钮
   Widget buildNaviBack(BuildContext context, double height) {
     return Container(
@@ -472,7 +471,16 @@ class __FijkPanel2State extends State<_FijkPanel2> {
       );
     }
   }
-
+  Widget buildQnButton(BuildContext context, double height) {
+    bool fullScreen = player.value.fullScreen;
+    return IconButton(
+      padding: EdgeInsets.all(0),
+      iconSize: fullScreen ? height : height * 0.8,
+      color: Color(0xFFFFFFFF),
+      icon: Icon(Icons.refresh),
+      onPressed: onRefresh,
+    );
+  }
   Widget buildTop(BuildContext context, double height) {
     // if (_isLocked) {
     //   // if locked, fixed screen and hidden all other controls
