@@ -16,8 +16,11 @@ Handler splashPageHanderl = Handler(
 );
 
 // 正常路由跳转 homepage
-Handler homePageHanderl = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+Handler homePageHanderl =
+    Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+  if (params.containsKey('index')) {
+    return AllTVHome(index: int.parse(params["index"].first));
+  }
   return AllTVHome();
 });
 

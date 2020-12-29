@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:fluro/fluro.dart';
+import 'package:flutter/material.dart';
 import 'package:alltv/model/category.dart';
 import 'package:alltv/model/live_room.dart';
 import 'package:alltv/provider/provider.dart';
@@ -8,8 +9,6 @@ import 'package:alltv/route/Application.dart';
 import 'package:alltv/route/routes.dart';
 import 'package:alltv/utils/storage.dart';
 import 'package:alltv/values/storages.dart';
-import 'package:fluro/fluro.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 /// 全局配置
@@ -32,7 +31,7 @@ class Global {
     await StorageUtil.init();
 
     // 初始化路由
-    Router router = Router();
+    FluroRouter router = FluroRouter();
     Routes.configureRoutes(router);
     Application.router = router;
     // 读取设备第一次打开

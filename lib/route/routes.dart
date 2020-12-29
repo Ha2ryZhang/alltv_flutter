@@ -9,7 +9,7 @@ class Routes {
   static String chanelDetail = '/chanelDetail';
   static String search ='/search';
 
-  static void configureRoutes(Router router) {
+  static void configureRoutes(FluroRouter router) {
     // router.notFoundHandler = new Handler(
     //     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
     //    print("ROUTE WAS NOT FOUND !!!");
