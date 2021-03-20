@@ -13,13 +13,16 @@
 
 <div style="text-align: center"><table><tr>
   <td style="text-align: center">
-<img src="./images/3.jpeg" width="200"/>
+<img src="./images/1.jpg" width="200"/>
 </td>
 <td style="text-align: center">
-<img src="./images/1.jpeg" width="200"/>
+<img src="./images/2.jpg" width="200"/>
 </td>
   <td style="text-align: center">
-<img src="./images/2.jpeg" width="200"/>
+<img src="./images/3.jpg" width="200"/>
+</td>
+<td style="text-align: center">
+<img src="./images/4.jpg" width="200"/>
 </td>
 </tr></table></div>
 
