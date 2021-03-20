@@ -1,5 +1,4 @@
 import 'package:alltv/route/navigator_util.dart';
-import 'package:alltv/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
 
 class ChanelPage extends StatefulWidget {
@@ -11,20 +10,20 @@ class _ChanelPageState extends State<ChanelPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text("所有平台", style: TextStyle(fontSize: 16.0)),
-          centerTitle: true,
-          actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            tooltip: "搜索",
-            onPressed: () {
-              showSearch(context: context, delegate: CustomSearchDelegate());
-              // NavigatorUtil.jump(context, Routes.search);
-            },
-          )
-        ],
-        ),
+        // appBar: AppBar(
+        //   title: Text("所有平台", style: TextStyle(fontSize: 16.0)),
+        //   centerTitle: true,
+        //   actions: <Widget>[
+        //   IconButton(
+        //     icon: Icon(Icons.search),
+        //     tooltip: "搜索",
+        //     onPressed: () {
+        //       showSearch(context: context, delegate: CustomSearchDelegate());
+        //       // NavigatorUtil.jump(context, Routes.search);
+        //     },
+        //   )
+        // ],
+        // ),
         body: buildChanelList());
   }
 
@@ -34,7 +33,7 @@ class _ChanelPageState extends State<ChanelPage> {
       //   children: <Widget>[
       //     ClipRRect(
       //         borderRadius: BorderRadius.circular(8),
-      //         child: Image.asset("assets/images/douyu.jpg",
+      //         child: Image.asset("assets/douyu.jpg",
       //             fit: BoxFit.fill, width: 80, height: 80)),
       //     Text("sddas")
       //   ],
@@ -43,7 +42,7 @@ class _ChanelPageState extends State<ChanelPage> {
       ListTile(
         leading: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.asset("assets/images/douyu.jpg",
+            child: Image.asset("assets/douyu.jpg",
                 fit: BoxFit.fill, width: 55, height: 55)),
         title: Text("斗鱼直播"),
         trailing: Icon(Icons.navigate_next),
@@ -59,7 +58,7 @@ class _ChanelPageState extends State<ChanelPage> {
       ListTile(
         leading: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.asset("assets/images/huya.jpg",
+            child: Image.asset("assets/huya.jpg",
                 fit: BoxFit.fill, width: 55, height: 55)),
         title: Text("虎牙直播"),
         trailing: Icon(Icons.navigate_next),
@@ -75,7 +74,7 @@ class _ChanelPageState extends State<ChanelPage> {
       ListTile(
         leading: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.asset("assets/images/bilibili.jpg",
+            child: Image.asset("assets/bilibili.jpg",
                 fit: BoxFit.fill, width: 55, height: 55)),
         title: Text("哔哩哔哩"),
         trailing: Icon(Icons.navigate_next),
@@ -91,7 +90,7 @@ class _ChanelPageState extends State<ChanelPage> {
       ListTile(
         leading: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.asset("assets/images/egame.jpeg",
+            child: Image.asset("assets/egame.jpeg",
                 fit: BoxFit.fill, width: 55, height: 55)),
         title: Text("企鹅电竞"),
         trailing: Icon(Icons.navigate_next),

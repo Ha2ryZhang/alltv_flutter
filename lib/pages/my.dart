@@ -133,7 +133,7 @@ class _MyPageState extends State<MyPage> {
               applicationName: 'alltv',
               applicationVersion: '1.2.0',
               applicationIcon: Image.asset(
-                "assets/images/alltv.png",
+                "assets/alltv.jpg",
                 width: 80,
               ),
               applicationLegalese: 'by HarryZhang',
@@ -149,7 +149,7 @@ class _MyPageState extends State<MyPage> {
                 ListTile(
                   contentPadding: EdgeInsets.only(left: 5),
                   leading: Image.asset(
-                    "assets/images/Github.png",
+                    "assets/Github.png",
                     width: 25,
                   ),
                   title: Text("Github"),
@@ -161,7 +161,7 @@ class _MyPageState extends State<MyPage> {
                 ListTile(
                   contentPadding: EdgeInsets.only(left: 5),
                   leading: Image.asset(
-                    "assets/images/juejin.png",
+                    "assets/juejin.png",
                     width: 25,
                   ),
                   title: Text("HarryZhang的博客"),
@@ -189,7 +189,7 @@ class _MyPageState extends State<MyPage> {
           leading: CircleAvatar(
             radius: 25,
             backgroundColor: Colors.white,
-            backgroundImage: Image.asset("assets/images/alltv.png").image,
+            backgroundImage: Image.asset("assets/alltv.jpg").image,
           ),
           title: Text("alltv"),
           subtitle: Text("目前功能暂时较少，请见谅。"),

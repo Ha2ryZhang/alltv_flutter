@@ -25,13 +25,13 @@ class BiliBiliHostServerConfig {
     port = json['port'];
     host = json['host'];
     if (json['host_server_list'] != null) {
-      hostServerList = new List<HostServerList>();
+      hostServerList = [];
       json['host_server_list'].forEach((v) {
         hostServerList.add(new HostServerList.fromJson(v));
       });
     }
     if (json['server_list'] != null) {
-      serverList = new List<ServerList>();
+      serverList = [];
       json['server_list'].forEach((v) {
         serverList.add(new ServerList.fromJson(v));
       });

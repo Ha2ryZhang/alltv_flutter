@@ -82,7 +82,6 @@ class _QuickActionsManagerState extends State<QuickActionsManager> {
 
   @override
   Widget build(BuildContext context) {
-    print('isFromAction' + isFromAction.toString());
     return SplashPage();
   }
 }

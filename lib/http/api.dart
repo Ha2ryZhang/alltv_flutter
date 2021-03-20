@@ -66,14 +66,15 @@ class API {
     }
   }
 
-  static Future<bool> checkLiveStatus(String com,String roomId) async {
+  static Future<bool> checkLiveStatus(String com, String roomId) async {
     var json = await HttpManager.getInstance()
-        .get('/'+com+'/checkLiveStatus', params: {"roomId": roomId});
-     return json["data"]==null?false:json["data"];
+        .get('/' + com + '/checkLiveStatus', params: {"roomId": roomId});
+    return json["data"] == null ? false : json["data"];
   }
-  static Future<List<LiveRoom>> search(String com,String keyword) async {
-    var json = await HttpManager.getInstance().get('/' + com + '/search',
-        params: {"keyword": keyword});
+
+  static Future<List<LiveRoom>> search(String com, String keyword) async {
+    var json = await HttpManager.getInstance()
+        .get('/' + com + '/search', params: {"keyword": keyword});
     List list = json["data"];
     List<LiveRoom> liveList = [];
     list.forEach((live) {
@@ -82,6 +83,7 @@ class API {
     });
     return liveList;
   }
+
   ///由于bilibili 风控对linux ，获取不到直播链，改为手动获取
   static Future<String> getBiLiveUrl(String roomId) async {
     String url =

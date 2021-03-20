@@ -6,13 +6,14 @@ import 'package:provider/provider.dart';
 
 /// 推荐页
 class Recommendation extends StatefulWidget {
+  final TabController controller;
+  const Recommendation({Key key, this.controller}) : super(key: key);
   @override
   RecommendationState createState() => new RecommendationState();
 }
 
 class RecommendationState extends State<Recommendation>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
   //推荐分类列表
   List<Category> _categoryList = [];
 
@@ -21,49 +22,21 @@ class RecommendationState extends State<Recommendation>
     super.initState();
     _categoryList =
         Provider.of<CategoryList>(context, listen: false).categories;
-    _tabController = TabController(length: _categoryList.length, vsync: this);
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    widget.controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(),
       body: buildTabView(),
     );
   }
 
-  /// appbar
-  Widget buildAppBar() {
-    return AppBar(
-      title: buildTabBar(),
-      titleSpacing: 0.0,
-      // 暂时去掉
-      // leading: new IconButton(
-      //     icon: new Icon(Icons.live_tv),
-      //     onPressed: () {
-      //       Fluttertoast.showToast(
-      //           msg: "This is Center Short Toast",
-      //           toastLength: Toast.LENGTH_SHORT,
-      //           gravity: ToastGravity.CENTER);
-      //     }),
-      actions: <Widget>[
-        new IconButton(
-          icon: new Icon(Icons.arrow_drop_down),
-          iconSize: 38.0,
-          alignment: Alignment.bottomCenter,
-          tooltip: "自定义",
-          onPressed: () {},
-        ),
-      ],
-      // bottom: buildTabBar(),
-    );
-  }
 
   /// tabbar
   Widget buildTabBar() {
@@ -75,7 +48,7 @@ class RecommendationState extends State<Recommendation>
     return TabBar(
         tabs: widgets,
         isScrollable: true,
-        controller: _tabController,
+        controller: widget.controller,
         indicatorColor: Colors.white);
   }
 
@@ -93,7 +66,7 @@ class RecommendationState extends State<Recommendation>
   /// tab view
   Widget buildTabView() {
     return TabBarView(
-      controller: _tabController,
+      controller: widget.controller,
       children: buildTabViewItem(),
     );
   }

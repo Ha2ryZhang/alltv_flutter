@@ -46,8 +46,8 @@ class ThemeColors {
     },
     "pink": {
       //pink
-      "primaryColor": Color(0xffE91E63),
-      "primaryColorDark": Color(0xffC2185B),
+      "primaryColor": Color(0xffdb5a6b),
+      "primaryColorDark": Color(0xfff47983),
       "colorAccent": Color(0xffFF4081),
       "colorPrimaryLight": Color(0xffF8BBD0),
     },

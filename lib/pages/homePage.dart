@@ -1,9 +1,16 @@
+import 'package:alltv/model/category.dart';
 import 'package:alltv/pages/chanel.dart';
-import 'package:alltv/pages/my.dart';
 import 'package:alltv/pages/my_favorite.dart';
 import 'package:alltv/pages/recommendation.dart';
+import 'package:alltv/provider/categoryList.dart';
+import 'package:alltv/provider/theme.dart';
+import 'package:alltv/route/navigator_util.dart';
+import 'package:alltv/route/routes.dart';
+import 'package:alltv/values/theme_colors.dart';
+import 'package:alltv/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AllTVHome extends StatefulWidget {
   final int index;
@@ -14,22 +21,42 @@ class AllTVHome extends StatefulWidget {
 
 class AllTVHomeState extends State<AllTVHome>
     with SingleTickerProviderStateMixin {
+  // int _currentIndex = 0;
+  TabController _tabController;
+  //推荐分类列表
+  List<Category> _categoryList = [];
   int _currentIndex = 0;
+  String title = "首页推荐";
+  String currentTheme;
+  bool _showBottom = true;
+  List<Widget> _pageList = [];
 
-  List<Widget> _pageList = [
-    Recommendation(),
-    MyFavorite(),
-    ChanelPage(),
-    MyPage()
+  List<BottomNavigationBarItem> _barItem = [
+    BottomNavigationBarItem(
+        icon: Icon(
+          Icons.home,
+        ),
+        label: "首页"),
+    BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "喜欢"),
+    BottomNavigationBarItem(icon: Icon(Icons.live_tv), label: "频道"),
+    // BottomNavigationBarItem(icon: Icon(Icons.person),label:""),
   ];
   @override
   void initState() {
     super.initState();
-    if (widget.index != null) {
-      setState(() {
-        this._currentIndex = widget.index;
-      });
-    }
+
+    print(currentTheme);
+    _categoryList =
+        Provider.of<CategoryList>(context, listen: false).categories;
+
+    _tabController = TabController(length: _categoryList.length, vsync: this);
+
+    _pageList = [
+      Recommendation(controller: _tabController),
+      MyFavorite(),
+      ChanelPage(),
+      // MyPage()
+    ];
   }
 
   @override
@@ -37,120 +64,152 @@ class AllTVHomeState extends State<AllTVHome>
     super.dispose();
   }
 
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  Widget buildTabBar() {
+    List<Widget> widgets = [];
+    _categoryList.forEach((c) {
+      widgets.add(Tab(text: c.name));
+    });
 
-  double gap = 10;
-  var padding = EdgeInsets.symmetric(horizontal: 18, vertical: 5);
+    return TabBar(
+        tabs: widgets,
+        isScrollable: true,
+        controller: _tabController,
+        indicatorColor: Colors.white);
+  }
+
   @override
   Widget build(BuildContext context) {
+    currentTheme = Provider.of<ThemeInfo>(context).themeColor;
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: this._pageList,
-      ),
-      // bottomNavigationBar: BottomNavigationBar(
-      //   onTap: (int index) {
-      //     setState(() {
-      //       this._currentIndex = index;
-      //     });
-      //   },
-      //   currentIndex: this._currentIndex,
-      //   items: _barItem,
-      //   type: BottomNavigationBarType.fixed,
-      // ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(color: Colors.white, boxShadow: [
-          BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(.1))
-        ]),
-        child: SafeArea(
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(100)),
-                boxShadow: [
-                  BoxShadow(
-                      spreadRadius: -10,
-                      blurRadius: 60,
-                      color: Colors.black.withOpacity(.4),
-                      offset: Offset(0, 25))
-                ]),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 3.0, vertical: 3),
-              child: GNav(
-                  curve: Curves.easeOutExpo,
-                  duration: Duration(milliseconds: 900),
-                  tabs: [
-                    GButton(
-                      gap: gap,
-                      iconActiveColor: Colors.blue,
-                      iconColor: Colors.black,
-                      textColor: Colors.blue,
-                      backgroundColor: Colors.blue.withOpacity(.2),
-                      iconSize: 24,
-                      padding: padding,
-                      icon: Icons.home,
-                      // textStyle: t.textStyle,
-                      text: 'Home',
-                    ),
-                    GButton(
-                      gap: gap,
-                      iconActiveColor: Colors.pink,
-                      iconColor: Colors.black,
-                      textColor: Colors.pink,
-                      backgroundColor: Colors.pink.withOpacity(.2),
-                      iconSize: 24,
-                      padding: padding,
-                      icon: Icons.favorite,
+        appBar: AppBar(
+          title: Text(title),
+          centerTitle: true,
+          elevation: 0,
+          bottom: _showBottom ? buildTabBar() : null,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search),
+              tooltip: "搜索",
+              onPressed: () {
+                showSearch(context: context, delegate: CustomSearchDelegate());
+              },
+            )
+          ],
+        ),
+        body: IndexedStack(
+          index: _currentIndex,
+          children: this._pageList,
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: (int index) {
+            setState(() {
+              switch (index) {
+                case 0:
+                  this.title = "首页推荐";
+                  this._showBottom = true;
+                  break;
+                case 1:
+                  this.title = "我的喜欢";
+                  this._showBottom = false;
+                  break;
+                case 2:
+                  this.title = "频道";
+                  this._showBottom = false;
+                  break;
+              }
+              this._currentIndex = index;
+            });
+          },
+          currentIndex: this._currentIndex,
+          items: _barItem,
+          type: BottomNavigationBarType.fixed,
+        ),
+        drawer: Drawer(
+          child:
+              ListView(padding: EdgeInsets.zero, children: buildDrawerItems()),
+        ));
+  }
 
-// textStyle: t.textStyle,
-                      text: 'Likes',
-                    ),
-                    GButton(
-                      gap: gap,
-                      iconActiveColor: Colors.amber[600],
-                      iconColor: Colors.black,
-                      textColor: Colors.amber[600],
-                      backgroundColor: Colors.amber[600].withOpacity(.2),
-                      iconSize: 24,
-                      padding: padding,
-                      icon: Icons.live_tv,
-// textStyle: t.textStyle,
-                      text: 'Channel',
-                    ),
-                    GButton(
-                      gap: gap,
-                      iconActiveColor: Colors.teal,
-                      iconColor: Colors.black,
-                      textColor: Colors.teal,
-                      backgroundColor: Colors.teal.withOpacity(.2),
-                      iconSize: 24,
-                      padding: padding,
-                      icon: Icons.people,
-                      leading: CircleAvatar(
-                          radius: 12,
-                          backgroundImage: NetworkImage(
-                              "https://sooxt98.space/content/images/size/w100/2019/01/profile.png")),
-// textStyle: t.textStyle,
-                      text: 'Mine',
-                    )
-                  ],
-                  selectedIndex: this._currentIndex,
-                  onTabChange: (index) {
-                    // _debouncer.run(() {
-
-                    print(index);
-                    setState(() {
-                      this._currentIndex = index;
-                      // badge = badge + 1;
-                    });
-                    // });
-                  }),
-            ),
-          ),
+  List<Widget> buildDrawerItems() {
+    return <Widget>[
+      UserAccountsDrawerHeader(
+        margin: EdgeInsets.zero,
+        accountName: Text(
+          "All TV",
+        ),
+        accountEmail: Text(
+          "happy every day",
         ),
       ),
-    );
+      ListTile(
+        leading: Icon(
+          Icons.palette,
+        ),
+        title: Text(
+          "主题切换",
+        ),
+        onTap: () {
+          NavigatorUtil.jump(context, Routes.themeSetting);
+        },
+        trailing: Icon(Icons.brightness_1,
+            color: ThemeColors.themeColor[currentTheme]["primaryColor"]),
+      ),
+      ListTile(
+        leading: Icon(
+          Icons.code,
+        ),
+        title: Text(
+          "关于项目",
+        ),
+        trailing: Icon(Icons.navigate_next),
+        onTap: () {
+          showAboutDialog(
+            context: context,
+            applicationName: 'alltv',
+            applicationVersion: '1.3.0',
+            applicationIcon: Image.asset(
+              "assets/alltv.jpg",
+              width: 80,
+            ),
+            applicationLegalese: 'by HarryZhang',
+            children: <Widget>[
+              Text(
+                '本项目是业余时间所写，随缘更新维护。',
+                style: TextStyle(fontSize: 13.5),
+              ),
+              Text(
+                '如果你觉得有帮助到你,那就麻烦点个Star吧！',
+                style: TextStyle(fontSize: 13.5),
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.only(left: 5),
+                leading: Image.asset(
+                  "assets/github-logo.png",
+                  width: 25,
+                ),
+                title: Text("Github"),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () async {
+                  await launch("https://github.com/ha2ryzhang/alltv_flutter");
+                },
+              ),
+              ListTile(
+                contentPadding: EdgeInsets.only(left: 5),
+                leading: Image.asset(
+                  "assets/juejin.png",
+                  width: 25,
+                ),
+                title: Text("HarryZhang的博客"),
+                trailing: Icon(Icons.navigate_next),
+                onTap: () async {
+                  await launch(
+                      "https://juejin.im/user/5ddb0cd4f265da7de03eca73");
+                },
+              ),
+            ],
+          );
+        },
+      )
+    ];
   }
 }

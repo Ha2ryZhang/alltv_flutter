@@ -76,7 +76,7 @@ class _ThemeSettingState extends State<ThemeSetting> {
           },
         ),
         ListTile(
-          leading: Icon(Icons.brightness_1, color: Color(0xffE91E63)),
+          leading: Icon(Icons.brightness_1, color: Color(0xffdb5a6b)),
           title: Text("哔哩粉"),
           trailing: buildCurrentUseButton('pink'),
           onTap: () {

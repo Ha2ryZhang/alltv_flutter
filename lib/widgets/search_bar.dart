@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   //默认整合多平台搜索
-  String com = "all";
+  String com = "douyu";
   Future future;
   @override
   String get searchFieldLabel => '搜索全网主播、房间号';
@@ -117,11 +117,11 @@ class CustomSearchDelegate extends SearchDelegate {
           imageUrl: room.roomThumb,
           fit: BoxFit.fitWidth,
           placeholder: (context, url) => Image.asset(
-            "assets/images/cache.png",
+            "assets/cache.png",
             fit: BoxFit.fitWidth,
           ),
           errorWidget: (context, url, error) => Image.asset(
-            "assets/images/cache.png",
+            "assets/cache.png",
             fit: BoxFit.fitWidth,
           ),
         ),

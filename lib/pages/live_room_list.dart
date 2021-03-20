@@ -115,12 +115,12 @@ class _LiveListState extends State<LiveList>
           fit: BoxFit.fitWidth,
           width: width,
           placeholder: (context, url) => Image.asset(
-            "assets/images/cache.png",
+            "assets/cache.png",
             fit: BoxFit.fitWidth,
             width: width,
           ),
           errorWidget: (context, url, error) => Image.asset(
-            "assets/images/cache.png",
+            "assets/cache.png",
             fit: BoxFit.fitWidth,
             width: width,
           ),
