@@ -1,6 +1,7 @@
 import 'package:alltv/http/dio_util.dart';
 import 'package:alltv/model/bilibili_host_server.dart';
 import 'package:alltv/model/live_room.dart';
+import 'package:alltv/model/verion_info.dart';
 import 'package:alltv/utils/toast.dart';
 import 'package:dio/dio.dart';
 
@@ -82,6 +83,13 @@ class API {
       liveList.add(liveRoom);
     });
     return liveList;
+  }
+  
+  static Future<VersionInfo> getLatestVersionInfo() async {
+    var json = await HttpManager.getInstance()
+        .get('/version/latest');
+    VersionInfo info= VersionInfo.fromJson(json["data"]);
+    return info;
   }
 
   ///由于bilibili 风控对linux ，获取不到直播链，改为手动获取

@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:alltv/http/api.dart';
 import 'package:alltv/model/category.dart';
 import 'package:alltv/pages/chanel.dart';
 import 'package:alltv/pages/my_favorite.dart';
@@ -9,6 +12,7 @@ import 'package:alltv/route/routes.dart';
 import 'package:alltv/values/theme_colors.dart';
 import 'package:alltv/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -45,7 +49,6 @@ class AllTVHomeState extends State<AllTVHome>
   void initState() {
     super.initState();
 
-    print(currentTheme);
     _categoryList =
         Provider.of<CategoryList>(context, listen: false).categories;
 
@@ -57,6 +60,49 @@ class AllTVHomeState extends State<AllTVHome>
       ChanelPage(),
       // MyPage()
     ];
+
+    checkUpdate();
+  }
+
+  int compareVersion(String v1, String v2) {
+    var a1 = v1.split(".");
+    var a2 = v2.split(".");
+
+    for (int n = 0; n < max(a1.length, a2.length); n++) {
+      int i = (n < a1.length ? int.parse(a1[n]) : 0);
+      int j = (n < a2.length ? int.parse(a2[n]) : 0);
+      if (i < j)
+        return -1;
+      else if (i > j) return 1;
+    }
+    return 0;
+  }
+
+  Future<void> checkUpdate() async {
+    var local = await PackageInfo.fromPlatform();
+    var server = await API.getLatestVersionInfo();
+    if (compareVersion(local.version, server.clientVersionName) < 0) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("发现新版本"),
+              content: Text("是否更新?"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("取消"),
+                  onPressed: () => Navigator.of(context).pop(), //关闭对话框
+                ),
+                FlatButton(
+                  child: Text("更新"),
+                  onPressed: () async {
+                    await launch(server.newVersionUrl);
+                  },
+                ),
+              ],
+            );
+          });
+    }
   }
 
   @override
@@ -138,7 +184,7 @@ class AllTVHomeState extends State<AllTVHome>
           "All TV",
         ),
         accountEmail: Text(
-          "happy every day",
+          "Stay Hungry. Stay Foolish.",
         ),
       ),
       ListTile(
@@ -154,6 +200,12 @@ class AllTVHomeState extends State<AllTVHome>
         trailing: Icon(Icons.brightness_1,
             color: ThemeColors.themeColor[currentTheme]["primaryColor"]),
       ),
+      ListTile(
+          leading: Icon(Icons.update),
+          title: Text("检查更新"),
+          onTap: () {
+            checkUpdate();
+          }),
       ListTile(
         leading: Icon(
           Icons.code,

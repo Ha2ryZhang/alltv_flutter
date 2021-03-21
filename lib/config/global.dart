@@ -47,7 +47,7 @@ class Global {
     String themeColor = StorageUtil().getString(THEME_INFO);
 
     themeColor == null
-        ? themeInfo.setTheme('blue')
+        ? themeInfo.setTheme('pink')
         : themeInfo.setTheme(themeColor);
 
     //读取分类信息 没有的话给个默认值
