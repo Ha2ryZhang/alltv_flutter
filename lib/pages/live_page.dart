@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:alltv/model/live_room.dart';
+import 'package:alltv/pages/loading.dart';
 import 'package:alltv/utils/common_convert.dart';
 import 'package:alltv/utils/fluro_convert_util.dart';
 import 'package:alltv/utils/toast.dart';
@@ -171,9 +172,7 @@ class _LivePageState extends State<LivePage> {
   @override
   Widget build(BuildContext context) {
     if (url == null) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
+      return LoadingPage();
     }
 
     return Scaffold(

@@ -9,9 +9,11 @@ import 'package:alltv/provider/categoryList.dart';
 import 'package:alltv/provider/theme.dart';
 import 'package:alltv/route/navigator_util.dart';
 import 'package:alltv/route/routes.dart';
+import 'package:alltv/utils/toast.dart';
 import 'package:alltv/values/theme_colors.dart';
 import 'package:alltv/widgets/search_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -61,7 +63,7 @@ class AllTVHomeState extends State<AllTVHome>
       // MyPage()
     ];
 
-    checkUpdate();
+    checkUpdate(false);
   }
 
   int compareVersion(String v1, String v2) {
@@ -78,7 +80,7 @@ class AllTVHomeState extends State<AllTVHome>
     return 0;
   }
 
-  Future<void> checkUpdate() async {
+  Future<void> checkUpdate(bool show) async {
     var local = await PackageInfo.fromPlatform();
     var server = await API.getLatestVersionInfo();
     if (compareVersion(local.version, server.clientVersionName) < 0) {
@@ -102,6 +104,8 @@ class AllTVHomeState extends State<AllTVHome>
               ],
             );
           });
+    } else {
+      if (show) showToast("已是最新版本!");
     }
   }
 
@@ -178,15 +182,16 @@ class AllTVHomeState extends State<AllTVHome>
 
   List<Widget> buildDrawerItems() {
     return <Widget>[
-      UserAccountsDrawerHeader(
-        margin: EdgeInsets.zero,
-        accountName: Text(
-          "All TV",
-        ),
-        accountEmail: Text(
-          "Stay Hungry. Stay Foolish.",
-        ),
-      ),
+      // UserAccountsDrawerHeader(
+      //   margin: EdgeInsets.zero,
+      //   accountName: Text(
+      //     "All TV",
+      //   ),
+      //   accountEmail: Text(
+      //     "Stay Hungry. Stay Foolish.",
+      //   ),
+      // ),
+      Lottie.asset("assets/lottie/drawer.json"),
       ListTile(
         leading: Icon(
           Icons.palette,
@@ -204,7 +209,7 @@ class AllTVHomeState extends State<AllTVHome>
           leading: Icon(Icons.update),
           title: Text("检查更新"),
           onTap: () {
-            checkUpdate();
+            checkUpdate(true);
           }),
       ListTile(
         leading: Icon(
@@ -214,11 +219,12 @@ class AllTVHomeState extends State<AllTVHome>
           "关于项目",
         ),
         trailing: Icon(Icons.navigate_next),
-        onTap: () {
+        onTap: () async {
+          var info = await PackageInfo.fromPlatform();
           showAboutDialog(
             context: context,
-            applicationName: 'alltv',
-            applicationVersion: '1.3.0',
+            applicationName: info.appName,
+            applicationVersion: info.version,
             applicationIcon: Image.asset(
               "assets/alltv.jpg",
               width: 80,

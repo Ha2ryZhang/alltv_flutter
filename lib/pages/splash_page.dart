@@ -1,5 +1,6 @@
 import 'package:alltv/route/navigator_util.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 /// 闪屏页
 class SplashPage extends StatefulWidget {
@@ -21,7 +22,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   startHome() async {
-    await Future.delayed(const Duration(milliseconds: 1000), () {
+    await Future.delayed(const Duration(milliseconds: 1500), () {
       NavigatorUtil.goHomePage(context);
     });
   }
@@ -36,10 +37,9 @@ class _SplashPageState extends State<SplashPage> {
             // center the children
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(
-                Icons.live_tv,
-                size: 150.0,
-                color: Colors.grey,
+              Container(
+                width: 200,
+                child: Lottie.asset("assets/lottie/splash.json"),
               ),
               Text(
                 "今天你的操作下饭了吗？",

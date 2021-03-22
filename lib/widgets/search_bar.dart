@@ -1,9 +1,11 @@
 import 'package:alltv/http/api.dart';
 import 'package:alltv/model/live_room.dart';
+import 'package:alltv/pages/loading.dart';
 import 'package:alltv/route/navigator_util.dart';
 import 'package:alltv/utils/common_convert.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   //默认整合多平台搜索
@@ -92,7 +94,7 @@ class CustomSearchDelegate extends SearchDelegate {
                   },
                 );
               }
-              return Center(child: CircularProgressIndicator());
+              return Center(child: Lottie.asset("assets/lottie/searching.json"));
             },
           )
         ]);
