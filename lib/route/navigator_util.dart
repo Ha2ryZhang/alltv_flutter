@@ -76,8 +76,8 @@ class NavigatorUtil {
 
   static Future goLiveoRoom(
       BuildContext context,
-      String roomId,
-      String com,
+      String? roomId,
+      String? com,
       String roomThumb,
       String avatar,
       String roomName,

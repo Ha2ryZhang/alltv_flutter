@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 
 /// 首页直播分类（自定义）
 class CategoryList with ChangeNotifier {
-  List<Category> items;
+  List<Category>? items;
   get categories => items;
 
-  CategoryList({List<Category> items});
+  CategoryList({List<Category>? items});
 
   void setCategories(List<Category> items) {
     this.items = items;

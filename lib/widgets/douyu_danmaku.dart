@@ -14,8 +14,8 @@ class DouYuLiveDanmakuPage extends StatefulWidget {
 
 class _LiveDanmakuPageState extends State<DouYuLiveDanmakuPage>
     with AutomaticKeepAliveClientMixin<DouYuLiveDanmakuPage> {
-  Timer timer;
-  IOWebSocketChannel _channel;
+  Timer? timer;
+  IOWebSocketChannel? _channel;
   int totleTime = 0;
   List _messageList = [];
   ScrollController _scrollController = ScrollController();
@@ -32,7 +32,7 @@ class _LiveDanmakuPageState extends State<DouYuLiveDanmakuPage>
   @override
   void dispose() {
     timer?.cancel();
-    _channel?.sink?.close();
+    _channel?.sink.close();
     super.dispose();
   }
 
@@ -54,12 +54,12 @@ class _LiveDanmakuPageState extends State<DouYuLiveDanmakuPage>
   //发送心跳包
   void heartBeat() {
     String heartbeat = 'type@=mrkl/';
-    _channel.sink.add(encode(heartbeat));
+    _channel!.sink.add(encode(heartbeat));
   }
 
   //设置监听
   void setListener() {
-    _channel.stream.listen((msg) {
+    _channel!.stream.listen((msg) {
       Uint8List list = Uint8List.fromList(msg);
       decode(list);
     });
@@ -71,13 +71,13 @@ class _LiveDanmakuPageState extends State<DouYuLiveDanmakuPage>
     String login =
         "type@=loginreq/room_id@=$roomID/dfl@=sn@A=105@Sss@A=1/username@=61609154/uid@=61609154/ver@=20190610/aver@=218101901/ct@=0/";
     print(login);
-    _channel.sink.add(encode(login));
+    _channel!.sink.add(encode(login));
     String joingroup = "type@=joingroup/rid@=$roomID/gid@=-9999/";
     print(joingroup);
-    _channel.sink.add(encode(joingroup));
+    _channel!.sink.add(encode(joingroup));
     String heartbeat = 'type@=mrkl/';
     print(heartbeat);
-    _channel.sink.add(encode(heartbeat));
+    _channel!.sink.add(encode(heartbeat));
   }
 
   //对消息进行解码
@@ -138,7 +138,7 @@ class _LiveDanmakuPageState extends State<DouYuLiveDanmakuPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollToBottom());
     return ListView.builder(
         controller: _scrollController,
         itemCount: _messageList.length,
@@ -146,7 +146,7 @@ class _LiveDanmakuPageState extends State<DouYuLiveDanmakuPage>
         // reverse: true,
         shrinkWrap: true,
         itemBuilder: (context, i) {
-          Widget item;
+          late Widget item;
           if (_messageList[i] is LiveDanmakuItem) {
             LiveDanmakuItem liveDanmakuItem = _messageList[i];
             item = Container(

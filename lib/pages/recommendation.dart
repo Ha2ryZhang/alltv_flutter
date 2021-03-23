@@ -6,8 +6,8 @@ import 'package:provider/provider.dart';
 
 /// 推荐页
 class Recommendation extends StatefulWidget {
-  final TabController controller;
-  const Recommendation({Key key, this.controller}) : super(key: key);
+  final TabController? controller;
+  const Recommendation({Key? key, this.controller}) : super(key: key);
   @override
   RecommendationState createState() => new RecommendationState();
 }
@@ -15,7 +15,7 @@ class Recommendation extends StatefulWidget {
 class RecommendationState extends State<Recommendation>
     with SingleTickerProviderStateMixin {
   //推荐分类列表
-  List<Category> _categoryList = [];
+  List<Category>? _categoryList = [];
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class RecommendationState extends State<Recommendation>
 
   @override
   void dispose() {
-    widget.controller.dispose();
+    widget.controller!.dispose();
     super.dispose();
   }
 
@@ -41,7 +41,7 @@ class RecommendationState extends State<Recommendation>
   /// tabbar
   Widget buildTabBar() {
     List<Widget> widgets = [];
-    _categoryList.forEach((c) {
+    _categoryList!.forEach((c) {
       widgets.add(Tab(text: c.name));
     });
 
@@ -54,7 +54,7 @@ class RecommendationState extends State<Recommendation>
 
   List<Widget> buildTabViewItem() {
     List<Widget> widgets = [];
-    _categoryList.forEach((category) {
+    _categoryList!.forEach((category) {
       widgets.add(LiveList(
         cid: category.cid,
         com: 'all',

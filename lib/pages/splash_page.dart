@@ -4,9 +4,9 @@ import 'package:lottie/lottie.dart';
 
 /// 闪屏页
 class SplashPage extends StatefulWidget {
-  SplashPage({Key key, this.title}) : super(key: key);
+  SplashPage({Key? key, this.title}) : super(key: key);
 
-  final String title;
+  final String? title;
 
   @override
   State<StatefulWidget> createState() {

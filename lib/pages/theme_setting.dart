@@ -10,7 +10,7 @@ class ThemeSetting extends StatefulWidget {
 }
 
 class _ThemeSettingState extends State<ThemeSetting> {
-  String currentTheme;
+  String? currentTheme;
   @override
   void initState() {
     currentTheme = Provider.of<ThemeInfo>(context, listen: false).themeColor;
@@ -25,7 +25,7 @@ class _ThemeSettingState extends State<ThemeSetting> {
     );
   }
 
-  Widget buildCurrentUseButton(String theme) {
+  Widget? buildCurrentUseButton(String theme) {
     if (currentTheme == theme) {
       return Icon(Icons.check_circle);
     } else {

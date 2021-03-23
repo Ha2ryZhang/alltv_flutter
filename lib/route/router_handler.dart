@@ -10,14 +10,14 @@ import 'package:fluro/fluro.dart';
 
 // 闪屏
 Handler splashPageHanderl = Handler(
-  handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+  handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
     return SplashPage();
   },
 );
 
 // 正常路由跳转 homepage
 Handler homePageHanderl =
-    Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+    Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
   if (params.containsKey('index')) {
     return AllTVHome(index: int.parse(params["index"].first));
   }
@@ -26,29 +26,29 @@ Handler homePageHanderl =
 
 // 路由传参
 Handler livePageHanderl = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
   LiveRoom liveRoom = new LiveRoom();
-  liveRoom.roomId = params['roomId'].first;
-  liveRoom.com = params['com'].first;
-  liveRoom.roomThumb = params['roomThumb'].first;
-  liveRoom.avatar = params['avatar'].first;
-  liveRoom.roomName = params['roomName'].first;
-  liveRoom.ownerName = params['ownerName'].first;
-  liveRoom.cateName = params['cateName'].first;
+  liveRoom.roomId = params['roomId']!.first;
+  liveRoom.com = params['com']!.first;
+  liveRoom.roomThumb = params['roomThumb']!.first;
+  liveRoom.avatar = params['avatar']!.first;
+  liveRoom.roomName = params['roomName']!.first;
+  liveRoom.ownerName = params['ownerName']!.first;
+  liveRoom.cateName = params['cateName']!.first;
   return LivePage(room: liveRoom);
 });
 //主题设置
 Handler themeSettingHanderl = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
   return ThemeSetting();
 });
 
 Handler chanelDetailHanderl = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
-  return ChanelDetail(com: params['com'].first);
+    handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
+  return ChanelDetail(com: params['com']!.first);
 });
 Handler searchHanderl = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
   return SearchPage();
 });
 // // 登陆页面

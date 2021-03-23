@@ -7,12 +7,12 @@ class HttpManager {
   final int receiveTimeout = 3000;
 
   //单例模式
-  static HttpManager _instance;
-  Dio _dio;
-  BaseOptions _options;
+  static HttpManager? _instance;
+  late Dio _dio;
+  BaseOptions? _options;
 
   //单例模式，只创建一次实例
-  static HttpManager getInstance() {
+  static HttpManager? getInstance() {
     if (null == _instance) {
       _instance = new HttpManager();
     }
@@ -38,21 +38,11 @@ class HttpManager {
     _dio = new Dio(_options);
     //设置Cookie
     // _dio.interceptors.add(CookieManager(CookieJar()));
-
-    //添加拦截器
-    _dio.interceptors
-        .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
-      return options;
-    }, onResponse: (Response response) {
-      return response;
-    }, onError: (DioError e) {
-      return e;
-    }));
   }
 
   //get请求方法
   get(url, {params, options, cancelToken}) async {
-    Response response;
+    late Response response;
     try {
       response = await _dio.get(url,
           queryParameters: params, options: options, cancelToken: cancelToken);
@@ -66,7 +56,7 @@ class HttpManager {
 
   //post请求
   post(url, {params, options, cancelToken}) async {
-    Response response;
+    Response? response;
     try {
       response = await _dio.post(url,
           queryParameters: params, options: options, cancelToken: cancelToken);
@@ -80,7 +70,7 @@ class HttpManager {
 
   //post Form请求
   postForm(url, {data, options, cancelToken}) async {
-    Response response;
+    Response? response;
     try {
       response = await _dio.post(url,
           options: options, cancelToken: cancelToken, data: data);
@@ -94,7 +84,7 @@ class HttpManager {
 
   //下载文件
   downLoadFile(urlPath, savePath) async {
-    Response response;
+    Response? response;
     try {
       response = await _dio.download(urlPath, savePath,
           onReceiveProgress: (int count, int total) {
@@ -114,15 +104,15 @@ class HttpManager {
   }
 
   void formatError(DioError e) {
-    if (e.type == DioErrorType.CONNECT_TIMEOUT) {
+    if (e.type == DioErrorType.connectTimeout) {
       showToast("网络好像出问题了");
-    } else if (e.type == DioErrorType.SEND_TIMEOUT) {
+    } else if (e.type == DioErrorType.sendTimeout) {
       showToast("请求超时");
-    } else if (e.type == DioErrorType.RECEIVE_TIMEOUT) {
+    } else if (e.type == DioErrorType.receiveTimeout) {
       showToast("响应超时");
-    } else if (e.type == DioErrorType.RESPONSE) {
+    } else if (e.type == DioErrorType.response) {
       showToast("出现异常");
-    } else if (e.type == DioErrorType.CANCEL) {
+    } else if (e.type == DioErrorType.cancel) {
       showToast("请求取消");
     } else {
       showToast("网络好像出问题了");

@@ -1,12 +1,12 @@
 class BiliBiliHostServerConfig {
-  double refreshRowFactor;
-  int refreshRate;
-  int maxDelay;
-  int port;
-  String host;
-  List<HostServerList> hostServerList;
-  List<ServerList> serverList;
-  String token;
+  double? refreshRowFactor;
+  int? refreshRate;
+  int? maxDelay;
+  int? port;
+  String? host;
+  List<HostServerList>? hostServerList;
+  List<ServerList>? serverList;
+  String? token;
 
   BiliBiliHostServerConfig(
       {this.refreshRowFactor,
@@ -27,13 +27,13 @@ class BiliBiliHostServerConfig {
     if (json['host_server_list'] != null) {
       hostServerList = [];
       json['host_server_list'].forEach((v) {
-        hostServerList.add(new HostServerList.fromJson(v));
+        hostServerList!.add(new HostServerList.fromJson(v));
       });
     }
     if (json['server_list'] != null) {
       serverList = [];
       json['server_list'].forEach((v) {
-        serverList.add(new ServerList.fromJson(v));
+        serverList!.add(new ServerList.fromJson(v));
       });
     }
     token = json['token'];
@@ -48,10 +48,10 @@ class BiliBiliHostServerConfig {
     data['host'] = this.host;
     if (this.hostServerList != null) {
       data['host_server_list'] =
-          this.hostServerList.map((v) => v.toJson()).toList();
+          this.hostServerList!.map((v) => v.toJson()).toList();
     }
     if (this.serverList != null) {
-      data['server_list'] = this.serverList.map((v) => v.toJson()).toList();
+      data['server_list'] = this.serverList!.map((v) => v.toJson()).toList();
     }
     data['token'] = this.token;
     return data;
@@ -59,10 +59,10 @@ class BiliBiliHostServerConfig {
 }
 
 class HostServerList {
-  String host;
-  int port;
-  int wssPort;
-  int wsPort;
+  String? host;
+  int? port;
+  int? wssPort;
+  int? wsPort;
 
   HostServerList({this.host, this.port, this.wssPort, this.wsPort});
 
@@ -84,8 +84,8 @@ class HostServerList {
 }
 
 class ServerList {
-  String host;
-  int port;
+  String? host;
+  int? port;
 
   ServerList({this.host, this.port});
 

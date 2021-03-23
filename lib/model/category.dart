@@ -1,6 +1,6 @@
 class Category {
-  String cid;
-  String name;
+  String? cid;
+  String? name;
   Category({
     this.cid,
     this.name,

@@ -10,9 +10,9 @@ import '../route/navigator_util.dart';
 
 class LiveList extends StatefulWidget {
   //分类id
-  final String cid;
-  final String com;
-  const LiveList({Key key, this.cid, this.com}) : super(key: key);
+  final String? cid;
+  final String? com;
+  const LiveList({Key? key, this.cid, this.com}) : super(key: key);
 
   @override
   _LiveListState createState() => _LiveListState();
@@ -41,17 +41,15 @@ class _LiveListState extends State<LiveList>
     try {
       //首页推荐
       if (widget.com == "all") {
-        list = await API.getRecommendAll(widget.cid, 1);
+        list = await API.getRecommendAll(widget.cid!, 1);
       } else {
         //具体某个平台推荐
-        list = await API.getRecommendByCom(widget.com, 1);
+        list = await API.getRecommendByCom(widget.com!, 1);
       }
       setState(() {
-        _liveRooms = list;
+        _liveRooms = list as List<LiveRoom>;
       });
-      if (_liveRooms != null) {
-        _refreshController.refreshCompleted();
-      }
+      _refreshController.refreshCompleted();
     } catch (e) {
       print(e);
       _refreshController.refreshFailed();
@@ -63,10 +61,10 @@ class _LiveListState extends State<LiveList>
     List<LiveRoom> list = [];
     //首页推荐
     if (widget.com == "all" && widget.cid == "0") {
-      list = await API.getRecommendAll(widget.cid, _pageNum + 1);
+      list = await API.getRecommendAll(widget.cid!, _pageNum + 1);
     } else {
       //具体某个平台推荐
-      list = await API.getRecommendByCom(widget.com, _pageNum + 1);
+      list = await API.getRecommendByCom(widget.com!, _pageNum + 1);
     }
     setState(() {
       _pageNum++;
@@ -111,7 +109,7 @@ class _LiveListState extends State<LiveList>
       alignment: AlignmentDirectional.bottomCenter,
       children: [
         CachedNetworkImage(
-          imageUrl: room.roomThumb,
+          imageUrl: room.roomThumb!,
           fit: BoxFit.fitWidth,
           width: width,
           placeholder: (context, url) => Image.asset(
@@ -145,7 +143,7 @@ class _LiveListState extends State<LiveList>
                 Expanded(
                     flex: 1,
                     child: new Text(
-                      room.cateName,
+                      room.cateName!,
                       style: new TextStyle(
                         fontSize: 15,
                         color: Colors.white,
@@ -157,7 +155,7 @@ class _LiveListState extends State<LiveList>
                   size: 20,
                 ),
                 new Text(
-                  convertOnline(room.online),
+                  convertOnline(room.online!),
                   style: new TextStyle(
                     fontSize: 15,
                     color: Colors.white,
@@ -176,11 +174,11 @@ class _LiveListState extends State<LiveList>
                   context,
                   room.roomId,
                   room.com,
-                  room.roomThumb,
-                  room.avatar,
-                  room.roomName,
-                  room.ownerName,
-                  room.cateName);
+                  room.roomThumb!,
+                  room.avatar!,
+                  room.roomName!,
+                  room.ownerName!,
+                  room.cateName!);
             },
             child: Column(
               children: <Widget>[
@@ -189,14 +187,14 @@ class _LiveListState extends State<LiveList>
                   contentPadding: const EdgeInsets.only(left: 5),
                   leading: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(room.avatar,
+                      child: Image.network(room.avatar!,
                           fit: BoxFit.fill, width: 50, height: 50)),
                   title: Text(
-                    convertCom(room.com) + '·' + room.ownerName,
+                    convertCom(room.com) + '·' + room.ownerName!,
                     overflow: TextOverflow.ellipsis,
                   ),
                   subtitle: Text(
-                    room.roomName,
+                    room.roomName!,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

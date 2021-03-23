@@ -1,9 +1,9 @@
 class VersionInfo {
-  int clientVersionCode;
-  String clientVersionName;
-  String serverVersion;
-  String lastUpdateTime;
-  String newVersionUrl;
+  int? clientVersionCode;
+  String? clientVersionName;
+  String? serverVersion;
+  String? lastUpdateTime;
+  String? newVersionUrl;
 
   VersionInfo(
       {this.clientVersionCode,

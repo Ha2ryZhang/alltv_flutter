@@ -25,7 +25,7 @@ void main() => Global.init().then((e) => runApp(
     ));
 
 class MyApp extends StatelessWidget {
-  final String themeColor;
+  final String? themeColor;
 
   MyApp(this.themeColor);
   @override
@@ -45,9 +45,6 @@ class MyApp extends StatelessWidget {
 }
 
 class QuickActionsManager extends StatefulWidget {
-  final Widget child;
-  QuickActionsManager({Key key, this.child}) : super(key: key);
-
   @override
   _QuickActionsManagerState createState() => _QuickActionsManagerState();
 }
@@ -70,8 +67,7 @@ class _QuickActionsManagerState extends State<QuickActionsManager> {
       }
     });
     quickActions.setShortcutItems(<ShortcutItem>[
-      const ShortcutItem(
-          type: 'user', localizedTitle: '我的', icon: 'user'),
+      const ShortcutItem(type: 'user', localizedTitle: '我的', icon: 'user'),
       const ShortcutItem(
         type: 'likes',
         localizedTitle: '我的关注',

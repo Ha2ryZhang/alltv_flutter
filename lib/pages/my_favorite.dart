@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:alltv/http/api.dart';
@@ -25,16 +26,16 @@ class _MyFavoriteState extends State<MyFavorite> {
       // appBar: new AppBar(
       //   title: Text("我的关注", style: TextStyle(fontSize: 16.0)),
       //   centerTitle: true,
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: Icon(Icons.search),
-        //     tooltip: "搜索",
-        //     onPressed: () {
-        //       showSearch(context: context, delegate: CustomSearchDelegate());
-        //       // NavigatorUtil.jump(context, Routes.search);
-        //     },
-        //   )
-        // ],
+      // actions: <Widget>[
+      //   IconButton(
+      //     icon: Icon(Icons.search),
+      //     tooltip: "搜索",
+      //     onPressed: () {
+      //       showSearch(context: context, delegate: CustomSearchDelegate());
+      //       // NavigatorUtil.jump(context, Routes.search);
+      //     },
+      //   )
+      // ],
       // ),
       body: SmartRefresher(
         controller: _refreshController,
@@ -48,11 +49,11 @@ class _MyFavoriteState extends State<MyFavorite> {
 
   @override
   void initState() {
-    // Map<String, dynamic> favorite =
-    //     json.decode(StorageUtil().getJSON(FAVORITE_ROOM));
-    // favorite.forEach((key, value) {
-    //   online.add(LiveRoom.fromJson(value));
-    // });
+    Map<String, dynamic> favorite =
+        json.decode(StorageUtil().getJSON(FAVORITE_ROOM));
+    favorite.forEach((key, value) {
+      online.add(LiveRoom.fromJson(value));
+    });
     super.initState();
   }
 
@@ -66,7 +67,8 @@ class _MyFavoriteState extends State<MyFavorite> {
         offOnline = [];
       });
       favorite.forEach((key, value) async {
-        bool isLive = await API.checkLiveStatus(value["com"], key);
+        bool isLive =
+            await (API.checkLiveStatus(value["com"], key) as FutureOr<bool>);
         if (isLive) {
           setState(() {
             online.add(LiveRoom.fromJson(value));
@@ -109,24 +111,24 @@ class _MyFavoriteState extends State<MyFavorite> {
         leading: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: CachedNetworkImage(
-              imageUrl: room.avatar,
+              imageUrl: room.avatar!,
               width: 50,
               height: 50,
               fit: BoxFit.fill,
             )),
-        title: Text(room.ownerName),
-        subtitle: Text(room.roomName),
+        title: Text(room.ownerName!),
+        subtitle: Text(room.roomName!),
         trailing: Icon(Icons.navigate_next),
         onTap: () {
           NavigatorUtil.goLiveoRoom(
               context,
               room.roomId,
               room.com,
-              room.roomThumb,
-              room.avatar,
-              room.roomName,
-              room.ownerName,
-              room.cateName);
+              room.roomThumb!,
+              room.avatar!,
+              room.roomName!,
+              room.ownerName!,
+              room.cateName!);
         },
       );
     }).toList();
@@ -138,12 +140,12 @@ class _MyFavoriteState extends State<MyFavorite> {
           leading: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: CachedNetworkImage(
-                imageUrl: room.avatar,
+                imageUrl: room.avatar!,
                 width: 50,
                 height: 50,
                 fit: BoxFit.fill,
               )),
-          title: Text(room.ownerName));
+          title: Text(room.ownerName!));
     }).toList();
   }
 

@@ -42,7 +42,7 @@ class FluroConvertUtils {
   }
 
   /// string json 转为 map
-  static Map<String, dynamic> string2map(String str) {
+  static Map<String, dynamic>? string2map(String str) {
     return json.decode(fluroCnParamsDecode(str));
   }
 }

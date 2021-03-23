@@ -1,16 +1,16 @@
 class LiveRoom {
-  String roomId;
-  String com;
-  String cateId;
-  String roomThumb;
-  String cateName;
-  String roomName;
-  int roomStatus;
-  String startTime;
-  String ownerName;
-  String avatar;
-  int online;
-  String realUrl;
+  String? roomId;
+  String? com;
+  String? cateId;
+  String? roomThumb;
+  String? cateName;
+  String? roomName;
+  int? roomStatus;
+  String? startTime;
+  String? ownerName;
+  String? avatar;
+  int? online;
+  String? realUrl;
 
   LiveRoom(
       {this.roomId,

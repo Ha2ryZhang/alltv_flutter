@@ -14,7 +14,7 @@ class MyPage extends StatefulWidget {
 
 class _MyPageState extends State<MyPage> {
   bool isDark = false;
-  String currentTheme;
+  String? currentTheme;
   @override
   void initState() {
     super.initState();

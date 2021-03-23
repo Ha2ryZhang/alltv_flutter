@@ -18,12 +18,12 @@ class LiveDanmakuPage extends StatefulWidget {
 
 class _LiveDanmakuPageState extends State<LiveDanmakuPage>
     with AutomaticKeepAliveClientMixin<LiveDanmakuPage> {
-  Timer timer;
-  IOWebSocketChannel _channel;
+  Timer? timer;
+  IOWebSocketChannel? _channel;
   int totleTime = 0;
   List _messageList = [];
   ScrollController _scrollController = ScrollController();
-  BiliBiliHostServerConfig config;
+  BiliBiliHostServerConfig? config;
   _scrollToBottom() {
     _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
   }
@@ -34,7 +34,7 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
       totleTime += 60;
       //sendXinTiaoBao();
       print("时间: $totleTime s");
-      _channel.sink?.close();
+      _channel!.sink.close();
       initLive();
     });
     initLive();
@@ -44,7 +44,7 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
   @override
   void dispose() {
     timer?.cancel();
-    _channel?.sink?.close();
+    _channel?.sink.close();
     super.dispose();
   }
 
@@ -55,9 +55,9 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
   Future<void> initLive() async {
     config = await API.getBServerHost(widget.roomId.toString());
     _channel = IOWebSocketChannel.connect("wss://" +
-        config.hostServerList[2].host +
+        config!.hostServerList![2].host! +
         ":" +
-        config.hostServerList[2].wssPort.toString() +
+        config!.hostServerList![2].wssPort.toString() +
         "/sub");
     joinRoom(widget.roomId);
     setListener();
@@ -65,7 +65,7 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
 
   void sendXinTiaoBao() {
     List<int> code = [0, 0, 0, 0, 0, 16, 0, 1, 0, 0, 0, 2, 0, 0, 0, 1];
-    _channel.sink.add(Uint8List.fromList(code));
+    _channel!.sink.add(Uint8List.fromList(code));
   }
 
   //加入房间
@@ -79,23 +79,23 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
         "\"clientver\":\"1.10.6\"," +
         "\"type\":2," +
         "\"key\":\"" +
-        config.token +
+        config!.token! +
         "\"}";
     print(msg);
-    _channel.sink.add(encode(7, msg: msg));
+    _channel!.sink.add(encode(7, msg: msg));
     sendXinTiaoBao();
   }
 
   //设置监听
   void setListener() {
-    _channel.stream.listen((msg) {
+    _channel!.stream.listen((msg) {
       Uint8List list = Uint8List.fromList(msg);
       decode(list);
     });
   }
 
   //对消息编码
-  Uint8List encode(int op, {String msg}) {
+  Uint8List encode(int op, {String? msg}) {
     List<int> header = [0, 0, 0, 0, 0, 16, 0, 1, 0, 0, 0, op, 0, 0, 0, 1];
     if (msg != null) {
       List<int> msgCode = utf8.encode(msg);
@@ -130,7 +130,7 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
           Uint8List body;
           if (ver == 2) {
             body = list.sublist(offset + headerLen, offset + packLen);
-            decode(ZLibDecoder().convert(body));
+            decode(ZLibDecoder().convert(body) as Uint8List);
             offset += packLen;
             continue;
           } else {
@@ -180,7 +180,7 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
   int readInt(Uint8List src, int start, int len) {
     int res = 0;
     for (int i = len - 1; i >= 0; i--) {
-      res += pow(256, len - i - 1) * src[start + i];
+      res += pow(256, len - i - 1) * src[start + i] as int;
     }
     return res;
   }
@@ -200,7 +200,7 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+    WidgetsBinding.instance!.addPostFrameCallback((_) => _scrollToBottom());
     return ListView.builder(
         controller: _scrollController,
         itemCount: _messageList.length,
@@ -208,7 +208,7 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
         // reverse: true,
         shrinkWrap: true,
         itemBuilder: (context, i) {
-          Widget item;
+          late Widget item;
           if (_messageList[i] is LiveDanmakuItem) {
             LiveDanmakuItem liveDanmakuItem = _messageList[i];
             item = Container(
@@ -254,7 +254,7 @@ class _LiveDanmakuPageState extends State<LiveDanmakuPage>
 }
 
 class DanmakuPackage {
-  int op;
+  int? op;
   dynamic body;
 }
 

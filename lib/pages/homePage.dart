@@ -19,8 +19,8 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AllTVHome extends StatefulWidget {
-  final int index;
-  const AllTVHome({Key key, this.index}) : super(key: key);
+  final int? index;
+  const AllTVHome({Key? key, this.index}) : super(key: key);
   @override
   AllTVHomeState createState() => AllTVHomeState();
 }
@@ -28,15 +28,15 @@ class AllTVHome extends StatefulWidget {
 class AllTVHomeState extends State<AllTVHome>
     with SingleTickerProviderStateMixin {
   // int _currentIndex = 0;
-  TabController _tabController;
+  TabController? _tabController;
   //推荐分类列表
-  List<Category> _categoryList = [];
+  List<Category>? _categoryList = [];
   int _currentIndex = 0;
   String title = "首页推荐";
-  String currentTheme;
+  String? currentTheme;
   bool _showBottom = true;
   List<Widget> _pageList = [];
-
+//Container(width: 24,child: Lottie.asset("assets/lottie/home.json",),)
   List<BottomNavigationBarItem> _barItem = [
     BottomNavigationBarItem(
         icon: Icon(
@@ -54,7 +54,7 @@ class AllTVHomeState extends State<AllTVHome>
     _categoryList =
         Provider.of<CategoryList>(context, listen: false).categories;
 
-    _tabController = TabController(length: _categoryList.length, vsync: this);
+    _tabController = TabController(length: _categoryList!.length, vsync: this);
 
     _pageList = [
       Recommendation(controller: _tabController),
@@ -83,7 +83,7 @@ class AllTVHomeState extends State<AllTVHome>
   Future<void> checkUpdate(bool show) async {
     var local = await PackageInfo.fromPlatform();
     var server = await API.getLatestVersionInfo();
-    if (compareVersion(local.version, server.clientVersionName) < 0) {
+    if (compareVersion(local.version, server.clientVersionName!) < 0) {
       showDialog(
           context: context,
           builder: (context) {
@@ -91,14 +91,14 @@ class AllTVHomeState extends State<AllTVHome>
               title: Text("发现新版本"),
               content: Text("是否更新?"),
               actions: <Widget>[
-                FlatButton(
+                TextButton(
                   child: Text("取消"),
                   onPressed: () => Navigator.of(context).pop(), //关闭对话框
                 ),
-                FlatButton(
+                TextButton(
                   child: Text("更新"),
                   onPressed: () async {
-                    await launch(server.newVersionUrl);
+                    await launch(server.newVersionUrl!);
                   },
                 ),
               ],
@@ -116,7 +116,7 @@ class AllTVHomeState extends State<AllTVHome>
 
   Widget buildTabBar() {
     List<Widget> widgets = [];
-    _categoryList.forEach((c) {
+    _categoryList!.forEach((c) {
       widgets.add(Tab(text: c.name));
     });
 
@@ -135,7 +135,7 @@ class AllTVHomeState extends State<AllTVHome>
           title: Text(title),
           centerTitle: true,
           elevation: 0,
-          bottom: _showBottom ? buildTabBar() : null,
+          bottom: _showBottom ? buildTabBar() as PreferredSizeWidget? : null,
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.search),

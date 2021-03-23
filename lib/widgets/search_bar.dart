@@ -1,6 +1,5 @@
 import 'package:alltv/http/api.dart';
 import 'package:alltv/model/live_room.dart';
-import 'package:alltv/pages/loading.dart';
 import 'package:alltv/route/navigator_util.dart';
 import 'package:alltv/utils/common_convert.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -9,8 +8,8 @@ import 'package:lottie/lottie.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   //默认整合多平台搜索
-  String com = "douyu";
-  Future future;
+  String? com = "douyu";
+  Future? future;
   @override
   String get searchFieldLabel => '搜索全网主播、房间号';
   @override
@@ -42,7 +41,7 @@ class CustomSearchDelegate extends SearchDelegate {
   }
 
   Future<List<LiveRoom>> fetchData() async {
-    return await API.search(com, query);
+    return await API.search(com!, query);
   }
 
   @override
@@ -56,7 +55,7 @@ class CustomSearchDelegate extends SearchDelegate {
           Center(
               child: DropdownButton<String>(
             value: com,
-            onChanged: (String newValue) {
+            onChanged: (String? newValue) {
               setState(() {
                 this.com = newValue;
                 this.future = fetchData();
@@ -69,7 +68,7 @@ class CustomSearchDelegate extends SearchDelegate {
             ].map<DropdownMenuItem<String>>((Com com) {
               return DropdownMenuItem<String>(
                 value: com.val,
-                child: Text(com.name),
+                child: Text(com.name!),
               );
             }).toList(),
           )),
@@ -116,7 +115,7 @@ class CustomSearchDelegate extends SearchDelegate {
         CachedNetworkImage(
           color: room.roomStatus != 1 ? Colors.grey : null,
           colorBlendMode: BlendMode.color,
-          imageUrl: room.roomThumb,
+          imageUrl: room.roomThumb!,
           fit: BoxFit.fitWidth,
           placeholder: (context, url) => Image.asset(
             "assets/cache.png",
@@ -167,7 +166,7 @@ class CustomSearchDelegate extends SearchDelegate {
                 Expanded(
                     flex: 1,
                     child: new Text(
-                      room.cateName,
+                      room.cateName!,
                       style: new TextStyle(
                         fontSize: 15,
                         color: Colors.white,
@@ -179,7 +178,7 @@ class CustomSearchDelegate extends SearchDelegate {
                   size: 20,
                 ),
                 new Text(
-                  convertOnline(room.online),
+                  convertOnline(room.online!),
                   style: new TextStyle(
                     fontSize: 15,
                     color: Colors.white,
@@ -198,11 +197,11 @@ class CustomSearchDelegate extends SearchDelegate {
                   context,
                   room.roomId,
                   room.com,
-                  room.roomThumb,
-                  room.avatar,
-                  room.roomName,
-                  room.ownerName,
-                  room.cateName);
+                  room.roomThumb!,
+                  room.avatar!,
+                  room.roomName!,
+                  room.ownerName!,
+                  room.cateName!);
             },
             child: Column(
               children: <Widget>[
@@ -217,7 +216,7 @@ class CustomSearchDelegate extends SearchDelegate {
                           child: CachedNetworkImage(
                             color: room.roomStatus != 1 ? Colors.grey : null,
                             colorBlendMode: BlendMode.color,
-                            imageUrl: room.avatar,
+                            imageUrl: room.avatar!,
                             fit: BoxFit.fill,
                             width: 30,
                             height: 30,
@@ -229,11 +228,11 @@ class CustomSearchDelegate extends SearchDelegate {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            convertCom(room.com) + '·' + room.ownerName,
+                            convertCom(room.com) + '·' + room.ownerName!,
                             overflow: TextOverflow.ellipsis,
                           ),
                           Text(
-                            room.roomName,
+                            room.roomName!,
                             style: TextStyle(color: Colors.grey, fontSize: 13),
                             overflow: TextOverflow.ellipsis,
                           )
@@ -247,8 +246,8 @@ class CustomSearchDelegate extends SearchDelegate {
 
 //平台
 class Com {
-  String name;
-  String val;
+  String? name;
+  String? val;
   Com({
     this.name,
     this.val,

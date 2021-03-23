@@ -44,7 +44,7 @@ class Global {
     }
     //读取主题信息
 
-    String themeColor = StorageUtil().getString(THEME_INFO);
+    String? themeColor = StorageUtil().getString(THEME_INFO);
 
     themeColor == null
         ? themeInfo.setTheme('pink')
@@ -52,7 +52,7 @@ class Global {
 
     //读取分类信息 没有的话给个默认值
 
-    List _categoriesJSON = StorageUtil().getJSON(RECOMMENDATION_CATEGORY_LIST);
+    List? _categoriesJSON = StorageUtil().getJSON(RECOMMENDATION_CATEGORY_LIST);
 
     if (_categoriesJSON != null) {
       //临时办法
@@ -88,11 +88,4 @@ class Global {
       SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
     }
   }
-
-  // // 持久化 用户信息
-  // static Future<bool> saveProfile(UserLoginResponseEntity userResponse) {
-  //   profile = userResponse;
-  //   return StorageUtil()
-  //       .setJSON(STORAGE_USER_PROFILE_KEY, userResponse.toJson());
-  // }
 }

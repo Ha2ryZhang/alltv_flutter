@@ -8,7 +8,7 @@ import 'package:dio/dio.dart';
 class API {
   /// 首页推荐
   static Future<List<LiveRoom>> getRecommendAll(String cid, int pageNum) async {
-    var json = await HttpManager.getInstance()
+    var json = await HttpManager.getInstance()!
         .get('/top/live/' + cid, params: {"pageNum": pageNum});
     List list = json["data"];
     List<LiveRoom> liveList = [];
@@ -22,7 +22,7 @@ class API {
   /// 平台推荐
   static Future<List<LiveRoom>> getRecommendByCom(
       String com, int pageNum) async {
-    var json = await HttpManager.getInstance().get('/' + com + '/top_rooms',
+    var json = await HttpManager.getInstance()!.get('/' + com + '/top_rooms',
         params: {"pageNum": pageNum, "pageSize": 15});
     List list = json["data"];
     List<LiveRoom> liveList = [];
@@ -33,19 +33,19 @@ class API {
     return liveList;
   }
 
-  static Future<String> getLiveUrl(String roomId, String com) async {
+  static Future<String?> getLiveUrl(String? roomId, String? com) async {
     switch (com) {
       case "bilibili":
         return getBiLiveUrl(roomId);
       default:
-        var json = await HttpManager.getInstance()
-            .get('/' + com + '/real_url/' + roomId);
+        var json = await HttpManager.getInstance()!
+            .get('/' + com! + '/real_url/' + roomId!);
         var data = json['data'];
         return data['realUrl'];
     }
   }
 
-  static Future<BiliBiliHostServerConfig> getBServerHost(String roomId) async {
+  static Future<BiliBiliHostServerConfig?> getBServerHost(String roomId) async {
     String url =
         "https://api.live.bilibili.com/room/v1/Danmu/getConf?id=$roomId";
     Dio dio = Dio();
@@ -67,14 +67,14 @@ class API {
     }
   }
 
-  static Future<bool> checkLiveStatus(String com, String roomId) async {
-    var json = await HttpManager.getInstance()
+  static Future<bool?> checkLiveStatus(String com, String roomId) async {
+    var json = await HttpManager.getInstance()!
         .get('/' + com + '/checkLiveStatus', params: {"roomId": roomId});
     return json["data"] == null ? false : json["data"];
   }
 
   static Future<List<LiveRoom>> search(String com, String keyword) async {
-    var json = await HttpManager.getInstance()
+    var json = await HttpManager.getInstance()!
         .get('/' + com + '/search', params: {"keyword": keyword});
     List list = json["data"];
     List<LiveRoom> liveList = [];
@@ -86,14 +86,14 @@ class API {
   }
   
   static Future<VersionInfo> getLatestVersionInfo() async {
-    var json = await HttpManager.getInstance()
+    var json = await HttpManager.getInstance()!
         .get('/version/latest');
     VersionInfo info= VersionInfo.fromJson(json["data"]);
     return info;
   }
 
   ///由于bilibili 风控对linux ，获取不到直播链，改为手动获取
-  static Future<String> getBiLiveUrl(String roomId) async {
+  static Future<String?> getBiLiveUrl(String? roomId) async {
     String url =
         "https://api.live.bilibili.com/room/v1/Room/playUrl?cid=$roomId&platform=h5&otype=json&quality=3";
     Dio dio = Dio();
@@ -105,13 +105,13 @@ class API {
           ));
 
       if (res.data["data"]["durl"] != null) {
-        List<String> list = [];
+        List<String?> list = [];
         for (Map<String, dynamic> i in res.data["data"]["durl"]) {
-          if (i != null && i["url"] != null) {
+          if (i["url"] != null) {
             list.add(i["url"]);
           }
         }
-        String url = list[0];
+        String? url = list[0];
         return url;
       }
       return null;

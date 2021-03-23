@@ -1,4 +1,4 @@
-String convertCom(String com) {
+String convertCom(String? com) {
   switch (com) {
     case 'douyu':
       return "斗鱼";
